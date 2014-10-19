@@ -107,7 +107,7 @@ void loop()
   while(!(LSM303_read(SR_REG_M) & 0x01))
     ;  // wait for the magnetometer readings to be ready
   getLSM303_mag(mag);  // get the magnetometer values, store them in mag
-  //printValues(mag, accel);  // print the raw accel and mag values, good debugging
+  printValues(mag, accel);  // print the raw accel and mag values, good debugging
   
   for (int i=0; i<3; i++)
     realAccel[i] = accel[i] / pow(2, 15) * SCALE;  // calculate real acceleration values, in units of g
@@ -116,7 +116,7 @@ void loop()
   Serial.print(getHeading(mag), 3);  // this only works if the sensor is level
   Serial.print("\t\t");  // print some tabs
   Serial.println(getTiltHeading(mag, realAccel), 3);  // see how awesome tilt compensation is?!
-  delay(100);  // delay for serial readability
+  delay(1500);  // delay for serial readability
 }
 
 void initLSM303(int fs)
@@ -133,17 +133,23 @@ void initLSM303(int fs)
 void printValues(int * magArray, int * accelArray)
 {
   /* print out mag and accel arrays all pretty-like */
+  Serial.print(" a-x: ");
   Serial.print(accelArray[X], DEC);
   Serial.print("\t");
+  Serial.print(" a-y: ");
   Serial.print(accelArray[Y], DEC);
   Serial.print("\t");
+  Serial.print(" a-z: ");
   Serial.print(accelArray[Z], DEC);
-  Serial.print("\t\t");
+  Serial.println("\t\t");
   
+  Serial.print(" m-x: ");
   Serial.print(magArray[X], DEC);
   Serial.print("\t");
+  Serial.print(" m-y: ");
   Serial.print(magArray[Y], DEC);
   Serial.print("\t");
+  Serial.print(" m-z: ");
   Serial.print(magArray[Z], DEC);
   Serial.println();
 }
