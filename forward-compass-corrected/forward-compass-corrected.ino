@@ -68,6 +68,7 @@ void loop(){
 
 //causes the redbot to go forward, while correcting it's orientation to match the goalHeading.
 void forward(int speed, float goalHeading){
+  int slowSpeed = (speed/2)+(speed/4)+(speed/8);
   while(true){
     compass.read();
     Heading = compass.heading();
@@ -76,9 +77,9 @@ void forward(int speed, float goalHeading){
       motors.drive(speed);
     }else if(t > 2){
       motors.leftDrive(speed);
-      motors.rightDrive(speed / 2); 
+      motors.rightDrive(slowSpeed); 
     }else if(t < 2){
-       motors.leftDrive(speed / 2);
+       motors.leftDrive(slowSpeed);
        motors.rightDrive(speed); 
     }
     delay(20);
