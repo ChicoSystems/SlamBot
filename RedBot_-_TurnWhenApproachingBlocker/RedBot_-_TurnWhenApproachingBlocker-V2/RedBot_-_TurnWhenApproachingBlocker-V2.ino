@@ -199,7 +199,8 @@ void turnTo(float dir, int n){
   Heading = compass.heading();
   int t = getTurn(Heading, dir);
   int mag; //how fast to turn based on how magnitude of turn
-  while(abs(t) >= 2){
+  int loopNum = 0; //lets us break out of while loop if motors are not working
+  while(abs(t) >= 2 && loopNum < 100){
     if(n == 0){
       mag = map(abs(t), 0, 180, 110, 250);
     }else if(n == 1){
@@ -219,6 +220,7 @@ void turnTo(float dir, int n){
     Heading = compass.heading();
     t = getTurn(Heading, dir);
     n++;
+    loopNum++;
   }
   motors.stop();
   delay(30); //compensate for problem with motor stop interfereing with compass.
