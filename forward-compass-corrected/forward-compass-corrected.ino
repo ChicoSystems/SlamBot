@@ -61,9 +61,9 @@ void loop(){
   Serial.print(Heading);
   Serial.println();
   turnTo(goalHeading, 0);
-  moveUntil(10, 180, goalHeading);
+  moveUntil(25, 180, goalHeading);
   loopNum++;
-  delay(2500);
+  delay(2000);
 }
 
 /**
