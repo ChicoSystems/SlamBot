@@ -41,12 +41,12 @@ void setup(){
 }
 
 void loop(){
-  Serial.println("LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP");
+  //Serial.println("LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP");
   
   compass.read();
   Heading = compass.heading();
   
-
+  Serial.print(" LOOP ");
   Serial.print(" HEADING: ");
   Serial.print(Heading);
   Serial.print(" Goal: ");
@@ -60,6 +60,7 @@ void loop(){
 }
 
 int getLongestSide(){
+  Serial.print(" getLongestSide ");
   compass.read();
   Heading = compass.heading();
   int longestSide = Heading;
@@ -67,6 +68,7 @@ int getLongestSide(){
   r = ping(RIGHT);
   b = ping(BACK);
   l = ping(LEFT);
+  
     Serial.print("F: ");
   Serial.print(f);
   Serial.print(" R: ");
@@ -74,7 +76,7 @@ int getLongestSide(){
   Serial.print(" B: ");
   Serial.print(b);
   Serial.print(" L: ");
-  Serial.print(l);
+  Serial.println(l);
   if(f >= b && f >= l){
     longestSide = Heading; // the front is the longest
   }else if(l >= r){ //the left is biggest
@@ -93,6 +95,7 @@ int getLongestSide(){
   the dist limit - in centimeters. It will do it at the directed speed. 0-255
 */
 void moveUntil(int dist, int speed, int dir){
+  Serial.print(" moveUntil ");
   //slowSpeed calculates how fast the slower motor will spin while the bot is turning.
   int slowSpeed = (speed/2)+(speed/4)+(speed/8);
   
@@ -190,6 +193,7 @@ void forward(int speed, float goalHeading){
 }
 
 void turnTo(float dir, int n){
+  Serial.print(" turnTo ");
   if(n > 3) return;
   compass.read();
   Heading = compass.heading();
