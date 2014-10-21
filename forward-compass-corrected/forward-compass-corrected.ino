@@ -154,13 +154,13 @@ void turnTo(float dir, int n){
   int mag; //how fast to turn based on how magnitude of turn
   while(abs(t) >= 2){
     if(n == 0){
-      mag = map(abs(t), 0, 180, 150, 250);
+      mag = map(abs(t), 0, 180, 110, 250);
     }else if(n == 1){
-      mag = map(abs(t), 0, 180, 110, 150);
+      mag = map(abs(t), 0, 180, 100, 150);
     }else if(n ==2){
-      mag = map(abs(t), 0, 180, 80, 115);
+      mag = map(abs(t), 0, 180, 90, 130);
     }else{
-      mag = map(abs(t), 0, 180, 50, 90);
+      mag = map(abs(t), 0, 180, 85, 120);
     }
     
     if( t >= 2){
