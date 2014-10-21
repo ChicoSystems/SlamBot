@@ -144,6 +144,8 @@ void forward(int speed, float goalHeading){
     Serial.print(" T: ");
     Serial.println(t);
   }
+  motors.stop();
+  delay(30);
 }
 
 void turnTo(float dir, int n){
@@ -174,7 +176,7 @@ void turnTo(float dir, int n){
     n++;
   }
   motors.stop();
-  delay(10); //compensate for problem with motor stop interfereing with compass.
+  delay(30); //compensate for problem with motor stop interfereing with compass.
   compass.read();
   Heading = compass.heading();
   t = getTurn(Heading, dir);
