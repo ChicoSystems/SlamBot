@@ -46,14 +46,7 @@ void loop(){
   compass.read();
   Heading = compass.heading();
   
-  Serial.print("F: ");
-  Serial.print(f);
-  Serial.print(" R: ");
-  Serial.print(r);
-  Serial.print(" B: ");
-  Serial.print(b);
-  Serial.print(" L: ");
-  Serial.print(l);
+
   Serial.print(" HEADING: ");
   Serial.print(Heading);
   Serial.print(" Goal: ");
@@ -70,8 +63,18 @@ int getLongestSide(){
   compass.read();
   Heading = compass.heading();
   int longestSide = Heading;
+  f = ping(FRONT);
+  r = ping(RIGHT);
   b = ping(BACK);
   l = ping(LEFT);
+    Serial.print("F: ");
+  Serial.print(f);
+  Serial.print(" R: ");
+  Serial.print(r);
+  Serial.print(" B: ");
+  Serial.print(b);
+  Serial.print(" L: ");
+  Serial.print(l);
   if(f >= b && f >= l){
     longestSide = Heading; // the front is the longest
   }else if(l >= r){ //the left is biggest
@@ -98,7 +101,18 @@ void moveUntil(int dist, int speed, int dir){
   int acc = 2;
   
   //We need the current measurement from the front distance sensor. This value will be re-read each time.
-  f = ping(FRONT);
+   f = ping(FRONT);
+   r = ping(RIGHT);
+   b = ping(BACK);
+   l = ping(LEFT);
+    Serial.print("F: ");
+  Serial.print(f);
+  Serial.print(" R: ");
+  Serial.print(r);
+  Serial.print(" B: ");
+  Serial.print(b);
+  Serial.print(" L: ");
+  Serial.print(l);
     if((f < dist || f > 1000) && f != 0){
         for(int i = 0; i < 5; i++){
            f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
