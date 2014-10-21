@@ -51,6 +51,7 @@ void setup(){
 }
 
 void loop(){
+  Serial.println("LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP");
   compass.read();
   Heading = compass.heading();
   goalHeading = goalHeading + 90;
@@ -60,25 +61,48 @@ void loop(){
   Serial.print(" HEADING: ");
   Serial.print(Heading);
   Serial.println();
-  turnTo(goalHeading);
+  turnTo(goalHeading, 0);
   loopNum++;
   delay(2500);
 }
 
-void turnTo(float dir){
+void turnTo(float dir, int n){
+  if(n > 2) return;
   compass.read();
   Heading = compass.heading();
-  while(abs(Heading - dir) >= 2){
-    int t = getTurn(Heading, dir);
+  int t = getTurn(Heading, dir);
+  int mag; //how fast to turn based on how magnitude of turn
+  while(abs(t) >= 2){
+    if(n == 0){
+      mag = map(abs(t), 0, 180, 150, 250);
+    }else{
+      mag = map(abs(t), 0, 180, 110, 150);
+    }
+    
+    if( t >= 2){
+       motors.pivot(-mag); 
+    }else{
+       motors.pivot(mag);
+    }
+    compass.read();
+    Heading = compass.heading();
+    t = getTurn(Heading, dir);
+  }
+  motors.stop();
+  if(abs(t) >= 2) turnTo(dir, n+1);
+  Serial.print("°: ");
+  Serial.print(Heading);
+  Serial.print(" G°: ");
+  Serial.println(dir);
+}
+
+/*
+void turnTo(float dir, int numCalled){
+  compass.read();
+  Heading = compass.heading();
+  int t = getTurn(Heading, dir);
+  while(t >= 2){
     int mag = map(abs(t), 0, 180, 110, 250); //how fast to turn based on how magnitude of turn
-    Serial.print(" Goal: ");
-    Serial.print(dir);
-    Serial.print(" HEADING: ");
-    Serial.print(Heading);
-    Serial.print(" t: ");
-    Serial.print(t);
-    Serial.print(" MAG:");
-    Serial.println(mag);
     if(t >= 1){
       motors.pivot(-mag);
     }else{
@@ -87,11 +111,25 @@ void turnTo(float dir){
     delay(30);
     compass.read();
     Heading = compass.heading();
+    t = getTurn(Heading, dir);
+    Serial.print(numCalled);
+     Serial.print(" Goal: ");
+    Serial.print(dir);
+    Serial.print(" HEADING: ");
+    Serial.print(Heading);
+    Serial.print(" t: ");
+    Serial.print(t);
+    Serial.print(" MAG:");
+    Serial.println(mag);
   }
   motors.brake();
+  int newNumCalled = numCalled + 1;
+  if(abs(t) > 2) turnTo(dir, newNumCalled);
 }
 
-int getTurn(cur, goal){
+*/
+
+int getTurn(float cur, float goal){
    int t = goal-cur;
     if(t > 180){
        t = 360 - t;
