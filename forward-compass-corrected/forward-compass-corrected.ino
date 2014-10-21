@@ -136,7 +136,7 @@ void forward(int speed, float goalHeading){
        motors.leftDrive(slowSpeed);
        motors.rightDrive(speed); 
     }
-    delay(20);
+    delay(50);
     Serial.print(" H :");
     Serial.print(Heading);
     Serial.print(" GH: ");
