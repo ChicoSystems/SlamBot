@@ -46,7 +46,7 @@ void setup(){
   compass.m_max = (LSM303::vector<int16_t>){+322, +517, +489};
   
   Serial.println("Turn-Test");
-  goalHeading = 0;
+  goalHeading = 45;
   delay(250);
 }
 
@@ -61,7 +61,7 @@ void loop(){
   Serial.print(Heading);
   Serial.println();
   turnTo(goalHeading, 0);
-  forward(200, goalHeading);
+  moveUntil(20, 180, goalHeading);
   loopNum++;
   delay(2500);
 }
@@ -71,7 +71,7 @@ void loop(){
   while measuring the front sonar. It will complete when the sonar senses an obstical within
   the dist limit - in centimeters. It will do it at the directed speed. 0-255
 */
-void moveUntil(int dist, int speed, float dir){
+void moveUntil(int dist, int speed, int dir){
   //slowSpeed calculates how fast the slower motor will spin while the bot is turning.
   int slowSpeed = (speed/2)+(speed/4)+(speed/8);
   
@@ -81,6 +81,9 @@ void moveUntil(int dist, int speed, float dir){
   
   //We need the current measurement from the front distance sensor. This value will be re-read each time.
   f = ping(FRONT);
+  if(f ==0) f = 10000; //over sensible distance fix
+  Serial.print(" P: ");
+  Serial.print(f);
   while(f >= dist){
     compass.read();
     Heading = compass.heading();
@@ -94,6 +97,8 @@ void moveUntil(int dist, int speed, float dir){
       motors.leftDrive(slowSpeed);
       motors.rightDrive(speed); 
     }
+    Serial.print(" P: ");
+    Serial.print(f);
     Serial.print(" H :");
     Serial.print(Heading);
     Serial.print(" GH: ");
@@ -102,7 +107,9 @@ void moveUntil(int dist, int speed, float dir){
     Serial.println(t);
     delay(20);
     f = ping(FRONT);
+    if(f ==0) f = 10000; //over sensible distance fix
   }
+  motors.brake();
 }
 
 //causes the redbot to go forward, while correcting it's orientation to match the goalHeading.
