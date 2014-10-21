@@ -61,7 +61,7 @@ void loop(){
   Serial.print(Heading);
   Serial.println();
   turnTo(goalHeading, 0);
-  moveUntil(20, 180, goalHeading);
+  moveUntil(10, 180, goalHeading);
   loopNum++;
   delay(2500);
 }
@@ -81,7 +81,11 @@ void moveUntil(int dist, int speed, int dir){
   
   //We need the current measurement from the front distance sensor. This value will be re-read each time.
   f = ping(FRONT);
-  if(f ==0) f = 10000; //over sensible distance fix
+  if(f ==0){
+    f = 10000; //over sensible distance fix
+  }else if(f < dist){
+     f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
+  }
   Serial.print(" P: ");
   Serial.print(f);
   while(f >= dist){
@@ -107,7 +111,11 @@ void moveUntil(int dist, int speed, int dir){
     Serial.println(t);
     delay(20);
     f = ping(FRONT);
-    if(f ==0) f = 10000; //over sensible distance fix
+     if(f ==0){
+        f = 10000; //over sensible distance fix
+     }else if(f < dist){
+        f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
+     }
   }
   motors.stop();
 }
