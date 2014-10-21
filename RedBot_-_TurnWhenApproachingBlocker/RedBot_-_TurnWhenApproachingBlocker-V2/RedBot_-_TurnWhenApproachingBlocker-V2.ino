@@ -42,11 +42,9 @@ void setup(){
 
 void loop(){
   Serial.println("LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP");
-  f = ping(FRONT);
-  r = ping(RIGHT);
-  b = ping(BACK);
-  l = ping(LEFT);
-  Heading = getCompassHeading();
+  
+  compass.read();
+  Heading = compass.heading();
   
   Serial.print("F: ");
   Serial.print(f);
@@ -58,19 +56,32 @@ void loop(){
   Serial.print(l);
   Serial.print(" HEADING: ");
   Serial.print(Heading);
-  Serial.println();
-  
-  goalHeading = goalHeading + 90;
-  goalHeading = goalHeading % 360;
   Serial.print(" Goal: ");
   Serial.print(goalHeading);
-  Serial.print(" HEADING: ");
-  Serial.print(Heading);
   Serial.println();
   turnTo(goalHeading, 0);
   moveUntil(25, 150, goalHeading);
+  goalHeading = getLongestSide();
   loopNum++;
-  delay(2000);
+  delay(200);
+}
+
+int getLongestSide(){
+  compass.read();
+  Heading = compass.heading();
+  int longestSide = Heading;
+  b = ping(BACK);
+  l = ping(LEFT);
+  if(f >= b && f >= l){
+    longestSide = Heading; // the front is the longest
+  }else if(l >= r){ //the left is biggest
+    longestSide = Heading + 270;
+  }else if(r > l){ //the right is biggest
+    longestSide = Heading + 90;
+  }
+  
+  longestSide = longestSide % 360;
+  return longestSide;
 }
 
 /**
