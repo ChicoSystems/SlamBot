@@ -109,7 +109,7 @@ void moveUntil(int dist, int speed, int dir){
     f = ping(FRONT);
     if(f ==0) f = 10000; //over sensible distance fix
   }
-  motors.brake();
+  motors.stop();
 }
 
 //causes the redbot to go forward, while correcting it's orientation to match the goalHeading.
@@ -139,7 +139,7 @@ void forward(int speed, float goalHeading){
 }
 
 void turnTo(float dir, int n){
-  if(n > 2) return;
+  if(n > 5) return;
   compass.read();
   Heading = compass.heading();
   int t = getTurn(Heading, dir);
@@ -147,8 +147,12 @@ void turnTo(float dir, int n){
   while(abs(t) >= 2){
     if(n == 0){
       mag = map(abs(t), 0, 180, 150, 250);
-    }else{
+    }else if(n == 1){
       mag = map(abs(t), 0, 180, 110, 150);
+    }else if(n ==2){
+      mag = map(abs(t), 0, 180, 80, 115);
+    }else{
+      mag = map(abs(t), 0, 180, 50, 90);
     }
     
     if( t >= 2){
