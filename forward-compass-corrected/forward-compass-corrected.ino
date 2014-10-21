@@ -66,6 +66,15 @@ void loop(){
   delay(2500);
 }
 
+/**
+  moveUntil(int dist, float dir) will cause the bot to go forward in a compass corrected direction
+  while measuring the front sonar. It will complete when the sonar senses an obstical within
+  the dist limit - in centimeters.
+*/
+void moveUntil(int dist, float dir){
+  
+}
+
 //causes the redbot to go forward, while correcting it's orientation to match the goalHeading.
 void forward(int speed, float goalHeading){
   int slowSpeed = (speed/2)+(speed/4)+(speed/8);
