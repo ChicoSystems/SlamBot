@@ -75,10 +75,33 @@ void moveUntil(int dist, int speed, float dir){
   //slowSpeed calculates how fast the slower motor will spin while the bot is turning.
   int slowSpeed = (speed/2)+(speed/4)+(speed/8);
   
+  /*acc will determine how many degree's accurate we want out movement to be.
+    if it's too low the bot will stutter a lot while moving.*/
+  int acc = 2;
+  
   //We need the current measurement from the front distance sensor. This value will be re-read each time.
   f = ping(FRONT);
   while(f >= dist){
-    
+    compass.read();
+    Heading = compass.heading();
+    int t = getTurn(Heading, dir);
+    if(abs(t) <= acc){ //go forward
+      motors.drive(speed);
+    }else if(t > 2){ //go slightly right
+      motors.leftDrive(speed);
+      motors.rightDrive(slowSpeed); 
+    }else if(t < 2){ //go slightly left
+      motors.leftDrive(slowSpeed);
+      motors.rightDrive(speed); 
+    }
+    Serial.print(" H :");
+    Serial.print(Heading);
+    Serial.print(" GH: ");
+    Serial.print(dir);
+    Serial.print(" T: ");
+    Serial.println(t);
+    delay(20);
+    f = ping(FRONT);
   }
 }
 
