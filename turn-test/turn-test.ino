@@ -69,26 +69,38 @@ void turnTo(float dir){
   compass.read();
   Heading = compass.heading();
   while(abs(Heading - dir) >= 2){
-    int a = dir-Heading;
-    a = (a + 180) % 360 - 180; // decide which direction to turn
-    int mag = map(abs(a), 0, 180, 90, 170); //how fast to turn based on how magnitude of turn
+    int t = getTurn(Heading, dir);
+    int mag = map(abs(t), 0, 180, 110, 250); //how fast to turn based on how magnitude of turn
     Serial.print(" Goal: ");
     Serial.print(dir);
     Serial.print(" HEADING: ");
     Serial.print(Heading);
-    Serial.print(" a: ");
-    Serial.print(a);
+    Serial.print(" t: ");
+    Serial.print(t);
     Serial.print(" MAG:");
     Serial.println(mag);
-    if(a >= 1){
+    if(t >= 1){
       motors.pivot(-mag);
     }else{
       motors.pivot(mag);
     }
+    delay(30);
     compass.read();
     Heading = compass.heading();
   }
   motors.brake();
+}
+
+int getTurn(cur, goal){
+   int t = goal-cur;
+    if(t > 180){
+       t = 360 - t;
+      t = -1 * t; 
+    }else if(t < -180){
+      t = t + 360;
+      if(t < 0) t = -1 * t;
+    } 
+    return t;
 }
 
 long ping(int direction){
