@@ -61,7 +61,7 @@ void loop(){
   Serial.print(Heading);
   Serial.println();
   turnTo(goalHeading, 0);
-  moveUntil(25, 180, goalHeading);
+  moveUntil(25, 150, goalHeading);
   loopNum++;
   delay(2000);
 }
@@ -83,7 +83,8 @@ void moveUntil(int dist, int speed, int dir){
   f = ping(FRONT);
   if(f < dist && f != 0){
         f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
-     }else if(f == 0){
+     }
+     if(f == 0){
         f = 10000; //over sensible distance fix
      }
   Serial.print(" P: ");
@@ -113,7 +114,8 @@ void moveUntil(int dist, int speed, int dir){
     f = ping(FRONT);
      if(f < dist && f != 0){
         f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
-     }else if(f == 0){
+     }
+     if(f == 0){
         f = 10000; //over sensible distance fix
      }
   }
