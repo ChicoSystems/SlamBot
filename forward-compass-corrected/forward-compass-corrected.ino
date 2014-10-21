@@ -81,8 +81,11 @@ void moveUntil(int dist, int speed, int dir){
   
   //We need the current measurement from the front distance sensor. This value will be re-read each time.
   f = ping(FRONT);
-  if(f < dist && f != 0){
-        f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
+    if(f < dist && f != 0){
+        for(int i = 0; i < 5; i++){
+           f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
+           if(f > dist) break;
+        }
      }
      if(f == 0){
         f = 10000; //over sensible distance fix
@@ -113,7 +116,10 @@ void moveUntil(int dist, int speed, int dir){
     delay(20);
     f = ping(FRONT);
      if(f < dist && f != 0){
-        f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
+        for(int i = 0; i < 5; i++){
+           f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
+           if(f > dist) break;
+        }
      }
      if(f == 0){
         f = 10000; //over sensible distance fix
