@@ -85,6 +85,7 @@ void moveUntil(int dist, int speed, int dir){
         for(int i = 0; i < 5; i++){
            f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
            if(f > dist) break;
+           delay(15);
         }
      }
      if(f == 0){
