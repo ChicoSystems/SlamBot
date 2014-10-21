@@ -147,7 +147,7 @@ void forward(int speed, float goalHeading){
 }
 
 void turnTo(float dir, int n){
-  if(n > 5) return;
+  if(n > 3) return;
   compass.read();
   Heading = compass.heading();
   int t = getTurn(Heading, dir);
@@ -171,6 +171,7 @@ void turnTo(float dir, int n){
     compass.read();
     Heading = compass.heading();
     t = getTurn(Heading, dir);
+    n++;
   }
   motors.stop();
   delay(10); //compensate for problem with motor stop interfereing with compass.
