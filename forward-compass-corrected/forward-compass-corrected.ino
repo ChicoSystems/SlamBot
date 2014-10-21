@@ -52,8 +52,7 @@ void setup(){
 
 void loop(){
   Serial.println("LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP");
-  compass.read();
-  Heading = compass.heading();
+  
   goalHeading = goalHeading + 90;
   goalHeading = goalHeading % 360;
   Serial.print(" Goal: ");
@@ -62,8 +61,34 @@ void loop(){
   Serial.print(Heading);
   Serial.println();
   turnTo(goalHeading, 0);
+  forward(200, goalHeading);
   loopNum++;
   delay(2500);
+}
+
+//causes the redbot to go forward, while correcting it's orientation to match the goalHeading.
+void forward(int speed, float goalHeading){
+  while(true){
+    compass.read();
+    Heading = compass.heading();
+    int t = getTurn(Heading, goalHeading);
+    if(abs(t) <= 2){
+      motors.drive(speed);
+    }else if(t > 2){
+      motors.leftDrive(speed);
+      motors.rightDrive(speed / 2); 
+    }else if(t < 2){
+       motors.leftDrive(speed / 2);
+       motors.rightDrive(speed); 
+    }
+    delay(20);
+    Serial.print(" H :");
+    Serial.print(Heading);
+    Serial.print(" GH: ");
+    Serial.print(goalHeading);
+    Serial.print(" T: ");
+    Serial.println(t);
+  }
 }
 
 void turnTo(float dir, int n){
@@ -244,8 +269,4 @@ long microsecondsToCentimeters(long microseconds){
   
   return microseconds / 29 / 2;
 }
-
-
-
-
 
