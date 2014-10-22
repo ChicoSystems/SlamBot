@@ -30,6 +30,7 @@ class DistanceSensorThread: public Thread{
       long ping(int direction){
         long duration;
         long cm = 0;
+        noInterrupts(); //disable multi-thread interrupts when pinging
          switch(direction){
             case FRONT:
               //ping is triggered by a high pulse of more than 2 microseconds
@@ -96,6 +97,7 @@ class DistanceSensorThread: public Thread{
                duration = pulseIn(lPinRead, HIGH, 8000);
             break;
          } 
+         interrupts(); // This will enable the interrupts egain. DO NOT FORGET!
          
           //convert time to distance
            //feet = microsecondsToFeet(duration);
