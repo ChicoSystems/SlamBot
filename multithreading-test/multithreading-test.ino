@@ -61,4 +61,19 @@ void setup(){
   Timer1.start();
 }
 
+void loop(){
+  // Here is where the Threads are processed
+  delay(500);
+  Serial.print(" F: ");
+  Serial.print(f);
+  Serial.print(" R: ");
+  Serial.print(r);
+  Serial.print(" B: ");
+  Serial.print(b);
+  Serial.print(" L: ");
+  Serial.println(l);
+  //More Thread Processing done, why break it in half?
+  delay(500);
+}
+
 
