@@ -25,6 +25,106 @@ class DistanceSensorThread: public Thread{
       b = ping(BACK);
       l = ping(LEFT); 
       runned();
+      
+      long ping(int direction){
+        long duration;
+        long cm = 0;
+         switch(direction){
+            case FRONT:
+              //ping is triggered by a high pulse of more than 2 microseconds
+               //gives a short LOW pulse beforehand to ensure clean High signal
+               pinMode(A2, OUTPUT);
+               digitalWrite(A2, LOW);
+               delayMicroseconds(2);
+               digitalWrite(A2, HIGH);
+               delayMicroseconds(5);
+               digitalWrite(A2, LOW);
+               
+               //the same pin is used to read the signal from the ping
+               //a high pulse whos duration is the time from the sending
+               //of the ping to the reception of its echo off of an object
+               pinMode(A3, INPUT);
+               duration = pulseIn(A3, HIGH, 8000);
+            break;
+            case RIGHT:
+              //ping is triggered by a high pulse of more than 2 microseconds
+               //gives a short LOW pulse beforehand to ensure clean High signal
+               pinMode(10, OUTPUT);
+               digitalWrite(10, LOW);
+               delayMicroseconds(2);
+               digitalWrite(10, HIGH);
+               delayMicroseconds(5);
+               digitalWrite(10, LOW);
+               
+               //the same pin is used to read the signal from the ping
+               //a high pulse whos duration is the time from the sending
+               //of the ping to the reception of its echo off of an object
+               pinMode(10, INPUT);
+               duration = pulseIn(10, HIGH, 8000);
+            break;
+            case BACK:
+              //ping is triggered by a high pulse of more than 2 microseconds
+               //gives a short LOW pulse beforehand to ensure clean High signal
+               pinMode(11, OUTPUT);
+               digitalWrite(11, LOW);
+               delayMicroseconds(2);
+               digitalWrite(11, HIGH);
+               delayMicroseconds(5);
+               digitalWrite(11, LOW);
+               
+               //the same pin is used to read the signal from the ping
+               //a high pulse whos duration is the time from the sending
+               //of the ping to the reception of its echo off of an object
+               pinMode(11, INPUT);
+               duration = pulseIn(11, HIGH, 8000);
+            break;
+            case LEFT:
+              //ping is triggered by a high pulse of more than 2 microseconds
+               //gives a short LOW pulse beforehand to ensure clean High signal
+               pinMode(A0, OUTPUT);
+               digitalWrite(A0, LOW);
+               delayMicroseconds(2);
+               digitalWrite(A0, HIGH);
+               delayMicroseconds(5);
+               digitalWrite(A0, LOW);
+               
+               //the same pin is used to read the signal from the ping
+               //a high pulse whos duration is the time from the sending
+               //of the ping to the reception of its echo off of an object
+               pinMode(A1, INPUT);
+               duration = pulseIn(A1, HIGH, 8000);
+            break;
+         } 
+         
+          //convert time to distance
+           //feet = microsecondsToFeet(duration);
+          // inches = microsecondsToInches(duration);
+           cm = microsecondsToCentimeters(duration);
+           return cm;
+      }
+      
+      
+      
+      long microsecondsToInches(long microseconds){
+       /*according to the datasheet there are 73.746 microseconds 
+       per inch, 1130 ft per second. Divided by 2 for outbound and return
+       */
+       return microseconds / 74 / 2;
+      }
+      
+      long microsecondsToFeet(long microseconds){
+       /*according to the datasheet there are 73.746 microseconds 
+       per inch, 1130 ft per second. Divided by 2 for outbound and return
+       */
+       return microsecondsToInches(microseconds)/12;
+      }
+      
+      long microsecondsToCentimeters(long microseconds){
+        /*The speed of sound is 340m/s or 29 microseconds
+        per centimeter. divided by 2 for inbound and outboud trips.*/
+        
+        return microseconds / 29 / 2;
+      }
     }
 };
 
@@ -75,5 +175,7 @@ void loop(){
   //More Thread Processing done, why break it in half?
   delay(500);
 }
+
+
 
 
