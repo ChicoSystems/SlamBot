@@ -2,6 +2,7 @@
 #include "Thread.h"
 #include "ThreadController.h"
 #include <TimerOne.h>
+#include <RedBot.h>
 
 class DistanceSensorThread: public Thread{
   public:
