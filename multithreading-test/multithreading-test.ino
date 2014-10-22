@@ -34,66 +34,66 @@ class DistanceSensorThread: public Thread{
             case FRONT:
               //ping is triggered by a high pulse of more than 2 microseconds
                //gives a short LOW pulse beforehand to ensure clean High signal
-               pinMode(A2, OUTPUT);
-               digitalWrite(A2, LOW);
+               pinMode(fPinWrite, OUTPUT);
+               digitalWrite(fPinWrite, LOW);
                delayMicroseconds(2);
-               digitalWrite(A2, HIGH);
+               digitalWrite(fPinWrite, HIGH);
                delayMicroseconds(5);
-               digitalWrite(A2, LOW);
+               digitalWrite(fPinWrite, LOW);
                
                //the same pin is used to read the signal from the ping
                //a high pulse whos duration is the time from the sending
                //of the ping to the reception of its echo off of an object
-               pinMode(A3, INPUT);
-               duration = pulseIn(A3, HIGH, 8000);
+               pinMode(fPinRead, INPUT);
+               duration = pulseIn(fPinRead, HIGH, 8000);
             break;
             case RIGHT:
               //ping is triggered by a high pulse of more than 2 microseconds
                //gives a short LOW pulse beforehand to ensure clean High signal
-               pinMode(10, OUTPUT);
-               digitalWrite(10, LOW);
+               pinMode(rPinWrite, OUTPUT);
+               digitalWrite(rPinWrite, LOW);
                delayMicroseconds(2);
-               digitalWrite(10, HIGH);
+               digitalWrite(rPinWrite, HIGH);
                delayMicroseconds(5);
-               digitalWrite(10, LOW);
+               digitalWrite(rPinWrite, LOW);
                
                //the same pin is used to read the signal from the ping
                //a high pulse whos duration is the time from the sending
                //of the ping to the reception of its echo off of an object
-               pinMode(10, INPUT);
-               duration = pulseIn(10, HIGH, 8000);
+               pinMode(rPinRead, INPUT);
+               duration = pulseIn(rPinRead, HIGH, 8000);
             break;
             case BACK:
               //ping is triggered by a high pulse of more than 2 microseconds
                //gives a short LOW pulse beforehand to ensure clean High signal
-               pinMode(11, OUTPUT);
-               digitalWrite(11, LOW);
+               pinMode(bPinWrite, OUTPUT);
+               digitalWrite(bPinWrite, LOW);
                delayMicroseconds(2);
-               digitalWrite(11, HIGH);
+               digitalWrite(bPinWrite, HIGH);
                delayMicroseconds(5);
-               digitalWrite(11, LOW);
+               digitalWrite(bPinWrite, LOW);
                
                //the same pin is used to read the signal from the ping
                //a high pulse whos duration is the time from the sending
                //of the ping to the reception of its echo off of an object
-               pinMode(11, INPUT);
-               duration = pulseIn(11, HIGH, 8000);
+               pinMode(bPinRead, INPUT);
+               duration = pulseIn(bPinRead, HIGH, 8000);
             break;
             case LEFT:
               //ping is triggered by a high pulse of more than 2 microseconds
                //gives a short LOW pulse beforehand to ensure clean High signal
-               pinMode(A0, OUTPUT);
-               digitalWrite(A0, LOW);
+               pinMode(lPinWrite, OUTPUT);
+               digitalWrite(lPinWrite, LOW);
                delayMicroseconds(2);
-               digitalWrite(A0, HIGH);
+               digitalWrite(lPinWrite, HIGH);
                delayMicroseconds(5);
-               digitalWrite(A0, LOW);
+               digitalWrite(lPinWrite, LOW);
                
                //the same pin is used to read the signal from the ping
                //a high pulse whos duration is the time from the sending
                //of the ping to the reception of its echo off of an object
-               pinMode(A1, INPUT);
-               duration = pulseIn(A1, HIGH, 8000);
+               pinMode(lPinRead, INPUT);
+               duration = pulseIn(lPinRead, HIGH, 8000);
             break;
          } 
          
