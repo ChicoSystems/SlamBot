@@ -27,8 +27,8 @@ class DistanceSensorThread: public Thread{
       l = ping(LEFT); 
       runned();
       
-      long ping(int direction){
-        long duration;
+      float ping(int direction){
+        float duration;
         long cm = 0;
         noInterrupts(); //disable multi-thread interrupts when pinging
          switch(direction){
@@ -153,13 +153,13 @@ void setup(){
   distanceSensor.lPinRead = A1;
   
   //set the interval that the class will run at.
-  distanceSensor.setInterval(250);
+  distanceSensor.setInterval(1000000);
   
   //add the DistanceSensor to the Thread Controller using it's pointer
   controller.add(&distanceSensor);
   
   //Initialize the timer used for multithreading.
-  Timer1.initialize(5000);
+  Timer1.initialize(100000);
   Timer1.attachInterrupt(timerCallback);
   Timer1.start();
 }
