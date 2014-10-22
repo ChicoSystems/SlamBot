@@ -18,5 +18,13 @@ class DistanceSensorThread: public Thread{
       l = ping(LEFT); 
       runned();
     }
+};
+
+DistanceSensorThread distanceSensor = DistanceSensorThread();
+ThreadController controller = ThreadController();
+
+void DistanceSensorCallback(){
+  distanceSensor.run(); 
 }
+
 
