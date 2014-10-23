@@ -12,8 +12,6 @@ class DistanceSensorThread: public Thread{
     //Tells us which pins to hook up to the four sensors.
     int fPinWrite, fPinRead, rPinWrite, rPinRead,
         bPinWrite, bPinRead, lPinWrite, lPinRead;
-        
-    
     
     DistanceSensorThread(){
        Serial.println("constructor()");
@@ -21,7 +19,7 @@ class DistanceSensorThread: public Thread{
     
     //Used by the multi-threading library
     void run(){
-      Serial.println("run()");
+      //Serial.println("run()");
       f = ping(0);
       r = ping(1);
       b = ping(2);
@@ -32,73 +30,41 @@ class DistanceSensorThread: public Thread{
       float ping(int direction){
         float duration;
         long cm = 0;
+        int readPin = 0;
+        int writePin = 0;
         noInterrupts(); //disable multi-thread interrupts when pinging
-         switch(direction){
-            case 0: //FRONT
-              //ping is triggered by a high pulse of more than 2 microseconds
+        
+          if(direction == 0){
+            readPin = fPinRead;
+            writePin = fPinWrite; 
+          }else if(direction == 1){
+            readPin = rPinRead;
+            writePin = rPinWrite;
+          }else if(direction == 2){
+            readPin = bPinRead;
+            writePin= bPinWrite; 
+          }else if(direction == 3){
+            readPin = lPinRead;
+            writePin = lPinWrite; 
+          }
+         // Serial.print(" rpin: ");
+          //Serial.println(readPin);
+          //ping is triggered by a high pulse of more than 2 microseconds
                //gives a short LOW pulse beforehand to ensure clean High signal
-               pinMode(fPinWrite, OUTPUT);
-               digitalWrite(fPinWrite, LOW);
+               pinMode(writePin, OUTPUT);
+               digitalWrite(writePin, LOW);
                delayMicroseconds(2);
-               digitalWrite(fPinWrite, HIGH);
+               digitalWrite(writePin, HIGH);
                delayMicroseconds(5);
-               digitalWrite(fPinWrite, LOW);
+               digitalWrite(writePin, LOW);
                
                //the same pin is used to read the signal from the ping
                //a high pulse whos duration is the time from the sending
                //of the ping to the reception of its echo off of an object
-               pinMode(fPinRead, INPUT);
-               duration = pulseIn(fPinRead, HIGH, 8000);
-            break;
-            case 1: //RIGHT
-              //ping is triggered by a high pulse of more than 2 microseconds
-               //gives a short LOW pulse beforehand to ensure clean High signal
-               pinMode(rPinWrite, OUTPUT);
-               digitalWrite(rPinWrite, LOW);
-               delayMicroseconds(2);
-               digitalWrite(rPinWrite, HIGH);
-               delayMicroseconds(5);
-               digitalWrite(rPinWrite, LOW);
-               
-               //the same pin is used to read the signal from the ping
-               //a high pulse whos duration is the time from the sending
-               //of the ping to the reception of its echo off of an object
-               pinMode(rPinRead, INPUT);
-               duration = pulseIn(rPinRead, HIGH, 8000);
-            break;
-            case 2: //BACK
-              //ping is triggered by a high pulse of more than 2 microseconds
-               //gives a short LOW pulse beforehand to ensure clean High signal
-               pinMode(bPinWrite, OUTPUT);
-               digitalWrite(bPinWrite, LOW);
-               delayMicroseconds(2);
-               digitalWrite(bPinWrite, HIGH);
-               delayMicroseconds(5);
-               digitalWrite(bPinWrite, LOW);
-               
-               //the same pin is used to read the signal from the ping
-               //a high pulse whos duration is the time from the sending
-               //of the ping to the reception of its echo off of an object
-               pinMode(bPinRead, INPUT);
-               duration = pulseIn(bPinRead, HIGH, 8000);
-            break;
-            case 3: //LEFT
-              //ping is triggered by a high pulse of more than 2 microseconds
-               //gives a short LOW pulse beforehand to ensure clean High signal
-               pinMode(lPinWrite, OUTPUT);
-               digitalWrite(lPinWrite, LOW);
-               delayMicroseconds(2);
-               digitalWrite(lPinWrite, HIGH);
-               delayMicroseconds(5);
-               digitalWrite(lPinWrite, LOW);
-               
-               //the same pin is used to read the signal from the ping
-               //a high pulse whos duration is the time from the sending
-               //of the ping to the reception of its echo off of an object
-               pinMode(lPinRead, INPUT);
-               duration = pulseIn(lPinRead, HIGH, 8000);
-            break;
-         } 
+               pinMode(readPin, INPUT);
+               duration = pulseIn(readPin, HIGH, 8000);
+          
+        
          interrupts(); // This will enable the interrupts egain. DO NOT FORGET!
          
           //convert time to distance
@@ -139,7 +105,7 @@ ThreadController controller = ThreadController();
 
 //The function that the timer will call for the DistanceSensor.
 void timerCallback(){
-  Serial.println(" timerCallback() ");
+  //Serial.println(" timerCallback() ");
   controller.run(); 
 }
 
@@ -162,7 +128,7 @@ void setup(){
   controller.add(&distanceSensor);
   
   //Initialize the timer used for multithreading.
-  Timer1.initialize(500000); //in microseconds
+  Timer1.initialize(50000); //in microseconds
   Timer1.attachInterrupt(timerCallback);
 }
 
