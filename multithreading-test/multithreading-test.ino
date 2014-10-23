@@ -13,26 +13,27 @@ class DistanceSensorThread: public Thread{
     int fPinWrite, fPinRead, rPinWrite, rPinRead,
         bPinWrite, bPinRead, lPinWrite, lPinRead;
         
-    //Constants that can be used to denote which sensor
-    const int FRONT = 0;
-    const int RIGHT = 1;
-    const int BACK = 2;
-    const int LEFT = 3;
+    
+    
+    DistanceSensorThread(){
+     
+    }
     
     //Used by the multi-threading library
     void run(){
-      f = ping(FRONT);
-      r = ping(RIGHT);
-      b = ping(BACK);
-      l = ping(LEFT); 
+      f = ping(0);
+      r = ping(1);
+      b = ping(2);
+      l = ping(3); 
       runned();
+    }
       
       float ping(int direction){
         float duration;
         long cm = 0;
         noInterrupts(); //disable multi-thread interrupts when pinging
          switch(direction){
-            case FRONT:
+            case 0: //FRONT
               //ping is triggered by a high pulse of more than 2 microseconds
                //gives a short LOW pulse beforehand to ensure clean High signal
                pinMode(fPinWrite, OUTPUT);
@@ -48,7 +49,7 @@ class DistanceSensorThread: public Thread{
                pinMode(fPinRead, INPUT);
                duration = pulseIn(fPinRead, HIGH, 8000);
             break;
-            case RIGHT:
+            case 1: //RIGHT
               //ping is triggered by a high pulse of more than 2 microseconds
                //gives a short LOW pulse beforehand to ensure clean High signal
                pinMode(rPinWrite, OUTPUT);
@@ -64,7 +65,7 @@ class DistanceSensorThread: public Thread{
                pinMode(rPinRead, INPUT);
                duration = pulseIn(rPinRead, HIGH, 8000);
             break;
-            case BACK:
+            case 2: //BACK
               //ping is triggered by a high pulse of more than 2 microseconds
                //gives a short LOW pulse beforehand to ensure clean High signal
                pinMode(bPinWrite, OUTPUT);
@@ -80,7 +81,7 @@ class DistanceSensorThread: public Thread{
                pinMode(bPinRead, INPUT);
                duration = pulseIn(bPinRead, HIGH, 8000);
             break;
-            case LEFT:
+            case 3: //LEFT
               //ping is triggered by a high pulse of more than 2 microseconds
                //gives a short LOW pulse beforehand to ensure clean High signal
                pinMode(lPinWrite, OUTPUT);
@@ -128,7 +129,7 @@ class DistanceSensorThread: public Thread{
         
         return microseconds / 29 / 2;
       }
-    }
+    
 };
 
 //Initiate our distance sensor and the controller
@@ -160,7 +161,7 @@ void setup(){
   
   //Initialize the timer used for multithreading.
   Timer1.initialize(100000);
-  Timer1.attachInterrupt(timerCallback);
+  Timer1.attachInterrupt(DistanceSensorCallback);
   Timer1.start();
 }
 
@@ -168,13 +169,13 @@ void loop(){
   // Here is where the Threads are processed
   delay(500);
   Serial.print(" F: ");
-  Serial.print(f);
+  Serial.print(distanceSensor.f);
   Serial.print(" R: ");
-  Serial.print(r);
+  Serial.print(distanceSensor.r);
   Serial.print(" B: ");
-  Serial.print(b);
+  Serial.print(distanceSensor.b);
   Serial.print(" L: ");
-  Serial.println(l);
+  Serial.println(distanceSensor.l);
   //More Thread Processing done, why break it in half?
   delay(500);
 }
