@@ -138,7 +138,8 @@ ThreadController controller = ThreadController();
 
 //The function that the timer will call for the DistanceSensor.
 void DistanceSensorCallback(){
-  distanceSensor.run(); 
+  Serial.print(" DISTANCESENSORCALLBACK() ");
+  controller.run(); 
 }
 
 void setup(){
@@ -154,14 +155,14 @@ void setup(){
   distanceSensor.lPinRead = A1;
   
   //set the interval that the class will run at.
-  distanceSensor.setInterval(1000000);
+  distanceSensor.setInterval(100);
   
   //add the DistanceSensor to the Thread Controller using it's pointer
   controller.add(&distanceSensor);
   
   //Initialize the timer used for multithreading.
-  Timer1.initialize(100000);
-  Timer1.attachInterrupt(DistanceSensorCallback);
+  Timer1.initialize(1000);
+  Timer1.attachInterrupt(DistanceSensorCallback, 1000);
   Timer1.start();
 }
 
