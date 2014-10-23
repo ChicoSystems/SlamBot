@@ -16,11 +16,12 @@ class DistanceSensorThread: public Thread{
     
     
     DistanceSensorThread(){
-     
+       Serial.println("constructor()");
     }
     
     //Used by the multi-threading library
     void run(){
+      Serial.println("run()");
       f = ping(0);
       r = ping(1);
       b = ping(2);
@@ -137,8 +138,8 @@ DistanceSensorThread distanceSensor = DistanceSensorThread();
 ThreadController controller = ThreadController();
 
 //The function that the timer will call for the DistanceSensor.
-void DistanceSensorCallback(){
-  Serial.print(" DISTANCESENSORCALLBACK() ");
+void timerCallback(){
+  Serial.println(" timerCallback() ");
   controller.run(); 
 }
 
@@ -155,15 +156,14 @@ void setup(){
   distanceSensor.lPinRead = A1;
   
   //set the interval that the class will run at.
-  distanceSensor.setInterval(100);
+  distanceSensor.setInterval(100);//in milliseconds
   
   //add the DistanceSensor to the Thread Controller using it's pointer
   controller.add(&distanceSensor);
   
   //Initialize the timer used for multithreading.
-  Timer1.initialize(1000);
-  Timer1.attachInterrupt(DistanceSensorCallback, 1000);
-  Timer1.start();
+  Timer1.initialize(500000); //in microseconds
+  Timer1.attachInterrupt(timerCallback);
 }
 
 void loop(){
