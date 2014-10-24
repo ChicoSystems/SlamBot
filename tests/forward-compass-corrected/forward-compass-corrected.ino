@@ -8,9 +8,9 @@
          SCL                   A5
 */
 
-#include <RedBot.h>
+#include "RedBot.h"
 #include <Wire.h>
-#include <LSM303.h>
+#include "LSM303.h"
 #include <math.h>
 
 // Instantiate the motors.
@@ -61,7 +61,7 @@ void loop(){
   Serial.print(Heading);
   Serial.println();
   turnTo(goalHeading, 0);
-  moveUntil(25, 150, goalHeading);
+  moveUntil(25, 185, goalHeading);
   loopNum++;
   delay(2000);
 }
@@ -165,13 +165,13 @@ void turnTo(float dir, int n){
   int mag; //how fast to turn based on how magnitude of turn
   while(abs(t) >= 2){
     if(n == 0){
-      mag = map(abs(t), 0, 180, 110, 250);
+      mag = map(abs(t), 0, 180, 150, 250);
     }else if(n == 1){
-      mag = map(abs(t), 0, 180, 100, 150);
+      mag = map(abs(t), 0, 180, 140, 200);
     }else if(n ==2){
-      mag = map(abs(t), 0, 180, 90, 130);
+      mag = map(abs(t), 0, 180, 130, 170);
     }else{
-      mag = map(abs(t), 0, 180, 85, 120);
+      mag = map(abs(t), 0, 180, 110, 160);
     }
     
     if( t >= 2){
@@ -183,6 +183,7 @@ void turnTo(float dir, int n){
     Heading = compass.heading();
     t = getTurn(Heading, dir);
     n++;
+    if(n < 25) break; //failsafe.
   }
   motors.stop();
   delay(30); //compensate for problem with motor stop interfereing with compass.

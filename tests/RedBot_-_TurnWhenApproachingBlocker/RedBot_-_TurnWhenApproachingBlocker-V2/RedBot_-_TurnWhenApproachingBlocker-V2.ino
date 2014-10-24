@@ -1,6 +1,6 @@
-#include <RedBot.h>
+#include "RedBot.h"
 #include <Wire.h>
-#include <LSM303.h>
+#include "LSM303.h"
 #include <math.h>
 
 // Instantiate the motors.
@@ -53,7 +53,7 @@ void loop(){
   Serial.print(goalHeading);
   Serial.println();
   turnTo(goalHeading, 0);
-  moveUntil(25, 150, goalHeading);
+  moveUntil(25, 190, goalHeading);
   goalHeading = getLongestSide();
   loopNum++;
   delay(200);
@@ -221,13 +221,13 @@ void turnTo(float dir, int n){
   int loopNum = 0; //lets us break out of while loop if motors are not working
   while(abs(t) >= 2 && loopNum < 1000){
     if(n == 0){
-      mag = map(abs(t), 0, 180, 110, 250);
+      mag = map(abs(t), 0, 180, 180, 250);
     }else if(n == 1){
-      mag = map(abs(t), 0, 180, 100, 150);
+      mag = map(abs(t), 0, 180, 180, 220);
     }else if(n ==2){
-      mag = map(abs(t), 0, 180, 90, 130);
+      mag = map(abs(t), 0, 180, 170, 210);
     }else{
-      mag = map(abs(t), 0, 180, 85, 120);
+      mag = map(abs(t), 0, 180, 150, 200);
     }
     
     if( t >= 2){

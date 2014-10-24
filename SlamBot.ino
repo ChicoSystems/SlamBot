@@ -13,6 +13,8 @@ DistanceSensorThread distanceSensor = DistanceSensorThread();
 CompassThread compass = CompassThread(); //we're not using this as a thread here
 ThreadController controller = ThreadController();
 
+float goalHeading = 0;
+
 //The function that the timer will call for the DistanceSensor.
 void timerCallback(){
  // Serial.print(" timerCallback() ");
@@ -21,7 +23,7 @@ void timerCallback(){
 
 void setup(){
   Serial.begin(9600); 
-  Serial.println("SETUP()");
+  Serial.println("SLAMBOT");
   compass.init();
   //setup pins to distanceSensor
   distanceSensor.fPinWrite = A2;
