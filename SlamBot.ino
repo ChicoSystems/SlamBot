@@ -7,10 +7,6 @@
 #include "CompassThread.h"
 
 #include <Wire.h>
-//#include <math.h>
-
-
-
 
 //Initiate our distance sensor and the controller
 DistanceSensorThread distanceSensor = DistanceSensorThread();

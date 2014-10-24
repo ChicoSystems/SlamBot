@@ -1,3 +1,5 @@
+#ifndef DistanceSensorThread_h
+#define DistanceSensorThread_h
 #include "Thread.h"
 #include "ThreadController.h"
 class DistanceSensorThread: public Thread{
@@ -94,3 +96,4 @@ class DistanceSensorThread: public Thread{
       }
     
 };
+#endif

@@ -1,3 +1,5 @@
+#ifndef CompassThread_h
+#define CompassThread_h
 #include "Thread.h"
 #include "ThreadController.h"
 #include "LSM303.h"
@@ -59,3 +61,4 @@ class CompassThread: public Thread{
       runned(); // Used by the multi-threading library 
     }
 };
+#endif
