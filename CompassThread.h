@@ -1,10 +1,3 @@
-#ifndef CompassThread_h
-#define CompassThread_h
-#include "Thread.h"
-#include "ThreadController.h"
-#include "LSM303.h"
-#include <Wire.h>
-
 /**
   * CompassThread - An object that keeps track of compass values.
   * Author - Isaac Assegai - https://github.com/itravers
@@ -16,6 +9,14 @@
   * easy readings from the LSM303 compass. This library can be found
   * here:  https://github.com/pololu/lsm303-arduino
  */
+ 
+#ifndef CompassThread_h
+#define CompassThread_h
+#include "Thread.h"
+#include "ThreadController.h"
+#include "LSM303.h"
+#include <Wire.h>
+
 class CompassThread: public Thread{
   public:
     float heading; // The most recent heading read from the compass.
