@@ -15,7 +15,7 @@ class DistanceSensorThread: public Thread{
     
     //Used by the multi-threading library
     void run(){
-     // Serial.print(" run() ");
+      //Serial.println("run()");
       f = ping(0);
       r = ping(1);
       b = ping(2);

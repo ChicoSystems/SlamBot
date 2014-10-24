@@ -12,7 +12,7 @@ ThreadController controller = ThreadController();
 
 //The function that the timer will call for the DistanceSensor.
 void timerCallback(){
- // Serial.print(" timerCallback() ");
+  Serial.println(" timerCallback() ");
   controller.run(); 
 }
 
