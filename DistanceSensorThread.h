@@ -10,7 +10,7 @@ class DistanceSensorThread: public Thread{
         bPinWrite, bPinRead, lPinWrite, lPinRead;
     
     DistanceSensorThread(){
-       Serial.println("constructor()");
+      
     }
     
     //Used by the multi-threading library

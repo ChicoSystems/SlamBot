@@ -4,10 +4,17 @@
 #include "DistanceSensorThread.h"
 #include "TimerOne.h"
 #include "RedBot.h"
+#include "CompassThread.h"
+
+#include <Wire.h>
+//#include <math.h>
+
+
 
 
 //Initiate our distance sensor and the controller
 DistanceSensorThread distanceSensor = DistanceSensorThread();
+CompassThread compass = CompassThread(); //we're not using this as a thread here
 ThreadController controller = ThreadController();
 
 //The function that the timer will call for the DistanceSensor.
@@ -18,6 +25,8 @@ void timerCallback(){
 
 void setup(){
   Serial.begin(9600); 
+  Serial.println("SETUP()");
+  compass.init();
   //setup pins to distanceSensor
   distanceSensor.fPinWrite = A2;
   distanceSensor.fPinRead = A3;
@@ -42,6 +51,8 @@ void setup(){
 void loop(){
   // Here is where the Threads are processed
   delay(500);
+  Serial.print(" COMPASS: ");
+  Serial.print(compass.getHeading());
   Serial.print(" F: ");
   Serial.print(distanceSensor.f);
   Serial.print(" R: ");
