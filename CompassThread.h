@@ -30,10 +30,14 @@ class CompassThread: public Thread{
        heading = -1;
     }
     
-    //Used by the multi-threading library
+    float getHeading(){
+      heading = compass.heading();
+      return heading;  
+    }
+    
+    //Used by the multi-threading library  
     void run(){
-     // Serial.print(" run() ");
-      
-      runned();
+      heading = compass.heading();
+      runned(); //Used by the multi-threading library 
     }
 };
