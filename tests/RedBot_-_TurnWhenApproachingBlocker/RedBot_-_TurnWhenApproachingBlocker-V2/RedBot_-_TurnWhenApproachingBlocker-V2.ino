@@ -78,7 +78,7 @@ int getLongestSide(){
   Serial.print(" L: ");
   Serial.println(l);
   
-   if((f < 25 || f > 500) && f != 0){
+   if((f < 25 || f > 501) && f != 0){
      if(r < l){  
        if(l == 0){ // if l is zero we are probably timing out on l, so it's a greater distance, we want to turn that way.
           longestSide = Heading + 270;
@@ -219,7 +219,7 @@ void turnTo(float dir, int n){
   int t = getTurn(Heading, dir);
   int mag; //how fast to turn based on how magnitude of turn
   int loopNum = 0; //lets us break out of while loop if motors are not working
-  while(abs(t) >= 2 && loopNum < 1000){
+  while(abs(t) >= 2 && loopNum < 100){
     if(n == 0){
       mag = map(abs(t), 0, 180, 180, 250);
     }else if(n == 1){
