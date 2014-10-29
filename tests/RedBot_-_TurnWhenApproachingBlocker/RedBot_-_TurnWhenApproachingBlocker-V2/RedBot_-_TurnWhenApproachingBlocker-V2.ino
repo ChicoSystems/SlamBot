@@ -60,7 +60,7 @@ void loop(){
 }
 
 int getLongestSide(){
-  Serial.print(" getLongestSide ");
+ // Serial.print(" getLongestSide ");
   compass.read();
   Heading = compass.heading();
   int longestSide = Heading;
@@ -167,7 +167,9 @@ void moveUntil(int dist, int speed, int dir){
     Serial.print(" GH: ");
     Serial.print(dir);
     Serial.print(" T: ");
-    Serial.println(t);
+    Serial.print(t);
+    Serial.print(" F: ");
+    Serial.println(f);
     delay(20);
     f = ping(FRONT);
      if((f < dist || f > 1000) && f != 0){

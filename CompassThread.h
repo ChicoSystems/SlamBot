@@ -63,3 +63,4 @@ class CompassThread: public Thread{
     }
 };
 #endif
+

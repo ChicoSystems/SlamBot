@@ -5,8 +5,18 @@
 #include "TimerOne.h"
 #include "RedBot.h"
 #include "CompassThread.h"
+#include "RedBotSoftwareSerial.h"
 
 #include <Wire.h>
+
+// Instantiate a software serial port. Note that the regular Arduino
+//  SoftwareSerial won't work! It steals resources that the sensor
+//  inputs on the RedBot need. Also note that the RedBot version has
+//  no input options- it automatically connects to the pins used for
+//  the onboard XBee header.
+//RedBotSoftwareSerial swsp;
+
+
 
 //Initiate our distance sensor and the controller
 DistanceSensorThread distanceSensor = DistanceSensorThread();
@@ -24,6 +34,11 @@ void timerCallback(){
 void setup(){
   Serial.begin(9600); 
   Serial.println("SLAMBOT");
+  
+  // Send out a hello via the XBee, if one is present.
+ // swsp.begin(9600);
+  //swsp.print("Hello, world");
+  
   compass.init();
   //setup pins to distanceSensor
   distanceSensor.fPinWrite = A2;
@@ -47,9 +62,10 @@ void setup(){
 }
 
 void loop(){
+  //swsp.println(distanceSensor.f);
   // Here is where the Threads are processed
   delay(500);
-  Serial.print(" COMPASS: ");
+  Serial.print(" COMPASSer: ");
   Serial.print(compass.getHeading());
   Serial.print(" F: ");
   Serial.print(distanceSensor.f);
@@ -62,3 +78,4 @@ void loop(){
   //More Thread Processing done, why break it in half?
   delay(500);
 }
+

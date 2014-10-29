@@ -55,3 +55,4 @@ void Thread::run(){
 	// Update last_run and _cached_next_run
 	runned();
 }
+
