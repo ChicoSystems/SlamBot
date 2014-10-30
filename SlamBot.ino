@@ -38,8 +38,9 @@ void setup(){
   // Send out a hello via the XBee, if one is present.
  // swsp.begin(9600);
   //swsp.print("Hello, world");
-  
+  Serial.println("initializing compass");
   compass.init();
+  Serial.println("compajss initialized");
   //setup pins to distanceSensor
   distanceSensor.fPinWrite = A2;
   distanceSensor.fPinRead = A3;
@@ -53,12 +54,14 @@ void setup(){
   //set the interval that the class will run at.
   distanceSensor.setInterval(100);//in milliseconds
   
+  Serial.println("adding distance sensor");
   //add the DistanceSensor to the Thread Controller using it's pointer
   controller.add(&distanceSensor);
-  
+  Serial.println("initializing timer");
   //Initialize the timer used for multithreading.
   Timer1.initialize(500000); //in microseconds
   Timer1.attachInterrupt(timerCallback);
+  Serial.println("timer initialized");
 }
 
 void loop(){
