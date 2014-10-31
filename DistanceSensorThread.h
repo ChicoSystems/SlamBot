@@ -78,7 +78,7 @@ class DistanceSensorThread: public Thread{
            We are using a timeout here to limit the amount of time the HC-SR04's
            Spend waiting for a return pulse. */
         pinMode(readPin, INPUT);
-        duration = pulseIn(readPin, HIGH, 8000);
+        duration = pulseIn(readPin, HIGH, 32000);
       interrupts(); // This will enable the interrupts egain. DO NOT FORGET!
       
       cm = microsecondsToCentimeters(duration); // Convert time to distance

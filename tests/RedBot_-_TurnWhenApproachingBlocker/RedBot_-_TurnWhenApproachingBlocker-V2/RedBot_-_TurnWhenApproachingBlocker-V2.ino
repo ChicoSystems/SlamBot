@@ -6,18 +6,23 @@
 // Instantiate the motors.
 RedBotMotor motors;
 
+// Create an alias for our beeper pin, for ease of use.
+#define BEEPER 9
+
 LSM303 compass;
 
 float pitch = 0; 
 float roll = 0;
 long l = 0, r = 0, f = 0, b = 0; 
-const int FRONT = 0;
-const int RIGHT = 1; 
-const int BACK = 2;
-const int LEFT = 3;
+const int FRONTp = 0;
+const int RIGHTp = 1; 
+const int BACKp = 2;
+const int LEFTp = 3;
 int goalHeading = 0;
 int loopNum = 0;
 float Heading = 0;
+RedBotBumper bumper(3, &bump);
+boolean bumped = false;
 
 void setup(){
    // We *probably* won't see the hardware serial data; what good is a robot
@@ -42,7 +47,7 @@ void setup(){
 
 void loop(){
   //Serial.println("LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP LOOP");
-  
+  tone(BEEPER, 150, 750);
   compass.read();
   Heading = compass.heading();
   
@@ -59,15 +64,22 @@ void loop(){
   delay(200);
 }
 
+void bump()
+{
+   Serial.println(" BUMPED: BUMPEDBUMPEDBUMPEDBUMPEDBUMPEDBUMPEDBUMPEDBUMPED");
+  bumped = true;
+  tone(BEEPER, 150, 750);
+}
+
 int getLongestSide(){
  // Serial.print(" getLongestSide ");
   compass.read();
   Heading = compass.heading();
   int longestSide = Heading;
-  f = ping(FRONT);
-  r = ping(RIGHT);
-  b = ping(BACK);
-  l = ping(LEFT);
+  f = ping(FRONTp);
+  r = ping(RIGHTp);
+  b = ping(BACKp);
+  l = ping(LEFTp);
   
     Serial.print("F: ");
   Serial.print(f);
@@ -123,10 +135,10 @@ void moveUntil(int dist, int speed, int dir){
   int acc = 2;
   
   //We need the current measurement from the front distance sensor. This value will be re-read each time.
-   f = ping(FRONT);
-   r = ping(RIGHT);
-   b = ping(BACK);
-   l = ping(LEFT);
+   f = ping(FRONTp);
+   r = ping(RIGHTp);
+   b = ping(BACKp);
+   l = ping(LEFTp);
     Serial.print("F: ");
   Serial.print(f);
   Serial.print(" R: ");
@@ -137,7 +149,7 @@ void moveUntil(int dist, int speed, int dir){
   Serial.print(l);
     if((f < dist || f > 1000) && f != 0){
         for(int i = 0; i < 5; i++){
-           f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
+           f = ping(FRONTp); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
            if(f > dist) break;
            delay(15);
         }
@@ -171,10 +183,10 @@ void moveUntil(int dist, int speed, int dir){
     Serial.print(" F: ");
     Serial.println(f);
     delay(20);
-    f = ping(FRONT);
+    f = ping(FRONTp);
      if((f < dist || f > 1000) && f != 0){
         for(int i = 0; i < 5; i++){
-           f = ping(FRONT); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
+           f = ping(FRONTp); //getting some incorrect low pings, this will make us need to ping under the dist twice to trigger 
            if(f > dist) break;
         }
      }
@@ -304,7 +316,7 @@ long ping(int direction){
   long duration;
   long cm = 0;
    switch(direction){
-      case FRONT:
+      case FRONTp:
         //ping is triggered by a high pulse of more than 2 microseconds
          //gives a short LOW pulse beforehand to ensure clean High signal
          pinMode(A2, OUTPUT);
@@ -320,7 +332,7 @@ long ping(int direction){
          pinMode(A3, INPUT);
          duration = pulseIn(A3, HIGH, 8000);
       break;
-      case RIGHT:
+      case RIGHTp:
         //ping is triggered by a high pulse of more than 2 microseconds
          //gives a short LOW pulse beforehand to ensure clean High signal
          pinMode(10, OUTPUT);
@@ -336,7 +348,7 @@ long ping(int direction){
          pinMode(10, INPUT);
          duration = pulseIn(10, HIGH, 8000);
       break;
-      case BACK:
+      case BACKp:
         //ping is triggered by a high pulse of more than 2 microseconds
          //gives a short LOW pulse beforehand to ensure clean High signal
          pinMode(11, OUTPUT);
@@ -352,7 +364,7 @@ long ping(int direction){
          pinMode(11, INPUT);
          duration = pulseIn(11, HIGH, 8000);
       break;
-      case LEFT:
+      case LEFTp:
         //ping is triggered by a high pulse of more than 2 microseconds
          //gives a short LOW pulse beforehand to ensure clean High signal
          pinMode(A0, OUTPUT);

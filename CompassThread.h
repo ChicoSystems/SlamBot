@@ -49,7 +49,7 @@ class CompassThread: public Thread{
     float getHeading(){
       compass.read();
       heading = compass.heading();
-      Serial.println(heading);
+     // Serial.println(heading);
       return heading;  
     }
     

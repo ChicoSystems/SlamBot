@@ -568,3 +568,4 @@ int LSM303::testReg(byte address, regAddr reg)
   else
     return TEST_REG_NACK;
 }
+
