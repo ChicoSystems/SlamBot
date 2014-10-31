@@ -74,7 +74,7 @@ class DistanceSensorThread: public Thread{
         digitalWrite(writePin, LOW);
                
         /* The same pin is used to read the signal from the Parallax Ping Sensors
-           An extra pin is used to read the signal from the HC-SR04 Sonar Sensors
+           An extra pin is used  is used to read the signal from the HC-SR04 Sonar Sensors
            We are using a timeout here to limit the amount of time the HC-SR04's
            Spend waiting for a return pulse. */
         pinMode(readPin, INPUT);

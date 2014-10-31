@@ -63,7 +63,7 @@ void setup(){
   distanceSensor.lPinWrite = A0;
   distanceSensor.lPinRead = A1;
   
-  //set the interval that the class will run at.
+  //set the interval that the clterval that tass will run at.
   distanceSensor.setInterval(100);//in milliseconds
   
   Serial.println("adding distance sensor");
