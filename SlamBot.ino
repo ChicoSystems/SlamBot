@@ -7,6 +7,7 @@
 #include "CompassThread.h"
 #include "SerialCommand.h"
 
+
 #include <Wire.h>
 
 // Create an alias for our pins
@@ -93,6 +94,7 @@ void loop(){
   delay(500);
   // move(goalHeading, 500, 20, 180);
   sCmd.readSerial();
+  Serial.println(compass.getHeading());
   
   if(bumped)bumped = !bumped;
   //More Thread Processing done, why break it in half?
