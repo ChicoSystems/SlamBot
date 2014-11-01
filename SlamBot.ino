@@ -237,7 +237,9 @@ void move(int dir, int dist_ticks, int blocked_dist_cm, int speed){
     //calculates the average amount of ticks between both engines since the function started
     avg_ticks_from_start = ((encoder.getTicks(LEFT)-encoderStart[0]) 
                                 + (encoder.getTicks(RIGHT)-encoderStart[1]) / 2);
-                                
+                     
+    Serial.print("currentHeading:");
+    Serial.print(compass.getHeading());           
     Serial.print(" AvgTicks:");
     Serial.print(avg_ticks_from_start);
     Serial.print(" f-ping:");
