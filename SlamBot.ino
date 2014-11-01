@@ -13,12 +13,9 @@
 #define BEEPER A7
 #define BUMPER A6
 
-// Instantiate a software serial port. Note that the regular Arduino
-//  SoftwareSerial won't work! It steals resources that the sensor
-//  inputs on the RedBot need. Also note that the RedBot version has
-//  no input options- it automatically connects to the pins used for
-//  the onboard XBee header.
-//RedBotSoftwareSerial swsp;
+String IncomingData = "";
+String Temp = "";
+char var;
 
 // Instantiate the motors.
 RedBotMotor motors;
@@ -89,8 +86,39 @@ void loop(){
   //swsp.println(distanceSensor.f);
   // Here is where the Threads are processed
   delay(500);
-  move(goalHeading, 500, 20, 180);
-  
+ // move(goalHeading, 500, 20, 180);
+  while(Serial.available()){
+    var = Serial.read();
+    Temp = String(var);
+    IncomingData+= Temp;
+  }
+   Serial.print("Incoming Data: ");
+   Serial.println(IncomingData);
+  if(IncomingData.startsWith("turn")){
+    int start = IncomingData.indexOf(":");
+    String s_dir = IncomingData.substring(start+1);
+    turnTo(s_dir.toInt(),0);
+  }else if(IncomingData.startsWith("move")){
+    int start = IncomingData.indexOf(":");
+    int end = IncomingData.indexOf(":", start+1);
+    String s_dir = IncomingData.substring(start+1, end);
+    Serial.println(s_dir);
+    
+    start = end+1;
+    end = IncomingData.indexOf(":", start+1);
+    String ticks = IncomingData.substring(start, end);
+    
+    start = end+1;
+    end = IncomingData.indexOf(":", start+1);
+    String dist = IncomingData.substring(start, end);
+    
+    start = end+1;
+    String sp = IncomingData.substring(start);
+    
+    move(s_dir.toInt(), ticks.toInt(), dist.toInt(), sp.toInt());
+  }
+
+ IncomingData = "";
   
   if(bumped)bumped = !bumped;
   //More Thread Processing done, why break it in half?
@@ -115,7 +143,7 @@ void move(int dir, int dist_ticks, int blocked_dist_cm, int speed){
   Serial.print(" blocked_dist_cm:");
   Serial.print(blocked_dist_cm);
   Serial.print(" speed:");
-  Serial.println(speed);
+  Serial.print(speed);
   
   //slowSpeed calculates how fast the slower motor will spin while the bot is turning.
   int slowSpeed = (speed/2)+(speed/4)+(speed/8);
@@ -193,6 +221,42 @@ int getTurn(float cur, float goal){
       if(t < 0) t = -1 * t;
     } 
     return t;
+}
+
+void turnTo(float dir, int n){
+  Serial.print(" turnTo ");
+  if(n > 3) return;
+  int t = getTurn(compass.getHeading(), dir);
+  int mag; //how fast to turn based on how magnitude of turn
+  int loopNum = 0; //lets us break out of while loop if motors are not working
+  while(abs(t) >= 2 && loopNum < 100){
+    if(n == 0){
+      mag = map(abs(t), 0, 180, 180, 250);
+    }else if(n == 1){
+      mag = map(abs(t), 0, 180, 180, 220);
+    }else if(n ==2){
+      mag = map(abs(t), 0, 180, 170, 210);
+    }else{
+      mag = map(abs(t), 0, 180, 150, 200);
+    }
+    
+    if( t >= 2){
+       motors.pivot(-mag); 
+    }else{
+       motors.pivot(mag);
+    }
+    t = getTurn(compass.getHeading(), dir);
+    n++;
+    loopNum++;
+  }
+  motors.stop();
+  delay(30); //compensate for problem with motor stop interfereing with compass.
+  t = getTurn(compass.getHeading(), dir);
+  if(abs(t) >= 2) turnTo(dir, n+1);
+  Serial.print("°: ");
+  Serial.print(compass.getHeading());
+  Serial.print(" G°: ");
+  Serial.println(dir);
 }
 
 
