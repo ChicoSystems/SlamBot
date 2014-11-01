@@ -5,17 +5,14 @@
 #include "TimerOne.h"
 #include "RedBot.h"
 #include "CompassThread.h"
-#include "RedBotSoftwareSerial.h"
+#include "SerialCommand.h"
 
 #include <Wire.h>
 
 // Create an alias for our pins
 #define BEEPER A7
 #define BUMPER A6
-
-String IncomingData = "";
-String Temp = "";
-char var;
+#define arduinoLED 13   // Arduino LED on board
 
 // Instantiate the motors.
 RedBotMotor motors;
@@ -28,6 +25,7 @@ DistanceSensorThread distanceSensor = DistanceSensorThread();
 CompassThread compass = CompassThread(); //we're not using this as a thread here
 ThreadController controller = ThreadController();
 RedBotBumper lBumper(BUMPER, &bump);
+SerialCommand sCmd;     // The demo SerialCommand object
 
 float goalHeading = 0;
 boolean bumped = false;
@@ -80,45 +78,21 @@ void setup(){
   
   encoder.clearEnc(BOTH);
   goalHeading = compass.getHeading();
+  
+  //add commands to allow remote control over serial
+  sCmd.addCommand("ON",    LED_on);          // Turns LED on
+  sCmd.addCommand("OFF",   LED_off);         // Turns LED off
+  sCmd.addCommand("T", processTurnCommand);
+  sCmd.addCommand("M", processMoveCommand);
+  sCmd.setDefaultHandler(processUnrecognizedCommand);      // Handler for command that isn't matched  (says "What?")
 }
 
 void loop(){
   //swsp.println(distanceSensor.f);
   // Here is where the Threads are processed
   delay(500);
- // move(goalHeading, 500, 20, 180);
-  while(Serial.available()){
-    var = Serial.read();
-    Temp = String(var);
-    IncomingData+= Temp;
-  }
-   Serial.print("Incoming Data: ");
-   Serial.println(IncomingData);
-  if(IncomingData.startsWith("turn")){
-    int start = IncomingData.indexOf(":");
-    String s_dir = IncomingData.substring(start+1);
-    turnTo(s_dir.toInt(),0);
-  }else if(IncomingData.startsWith("move")){
-    int start = IncomingData.indexOf(":");
-    int end = IncomingData.indexOf(":", start+1);
-    String s_dir = IncomingData.substring(start+1, end);
-    Serial.println(s_dir);
-    
-    start = end+1;
-    end = IncomingData.indexOf(":", start+1);
-    String ticks = IncomingData.substring(start, end);
-    
-    start = end+1;
-    end = IncomingData.indexOf(":", start+1);
-    String dist = IncomingData.substring(start, end);
-    
-    start = end+1;
-    String sp = IncomingData.substring(start);
-    
-    move(s_dir.toInt(), ticks.toInt(), dist.toInt(), sp.toInt());
-  }
-
- IncomingData = "";
+  // move(goalHeading, 500, 20, 180);
+  sCmd.readSerial();
   
   if(bumped)bumped = !bumped;
   //More Thread Processing done, why break it in half?
@@ -128,6 +102,85 @@ void loop(){
 void bump(){
   bumped = true;
   tone(BEEPER, 150, 750);
+}
+
+// This gets set as the default handler, and gets called when no other command matches.
+void processUnrecognizedCommand(const char *command) {
+  Serial.println("What?");
+}
+
+/* Processes the turn command coming in over serial. */
+void processTurnCommand() {
+  int aNumber;
+  char *arg;
+
+  Serial.println("We're in processTurnCommand");
+  arg = sCmd.next();
+  if (arg != NULL) {
+    aNumber = atoi(arg);    // Converts a char string to an integer
+    Serial.print("First argument was: ");
+    Serial.println(aNumber);
+    turnTo(aNumber, 0);
+  }else {
+    Serial.println("No arguments");
+  }
+}
+
+/* Processes the turn command coming in over serial. */
+void processMoveCommand() {
+  int dir, ticks, blocked_dist_cm, sp;
+  
+  int aNumber;
+  char *arg;
+
+  Serial.println("We're in processMoveCommand");
+  arg = sCmd.next();
+  if (arg != NULL) {
+    aNumber = atoi(arg);    // Converts a char string to an integer
+    Serial.print("First argument was: ");
+    Serial.println(aNumber);
+    dir = aNumber;
+    arg = sCmd.next();
+    if (arg != NULL) {
+      aNumber = atoi(arg);    // Converts a char string to an integer
+      Serial.print("2nd argument was: ");
+      Serial.println(aNumber);
+      ticks = aNumber;
+      arg = sCmd.next();
+      if (arg != NULL) {
+        aNumber = atoi(arg);    // Converts a char string to an integer
+        Serial.print("3rd argument was: ");
+        Serial.println(aNumber);
+        blocked_dist_cm = aNumber;
+        arg = sCmd.next();
+        if (arg != NULL) {
+          aNumber = atoi(arg);    // Converts a char string to an integer
+          Serial.print("4th argument was: ");
+          Serial.println(aNumber);
+          sp = aNumber;
+        }else{
+          Serial.println("No 4th Argument");
+        }
+      }else{
+        Serial.println("No 3nd Argument");
+      }
+    }else{
+      Serial.println("No 2nd Argument");
+    }
+  }else {
+    Serial.println("No First Argument");
+  }
+  move(dir, ticks, blocked_dist_cm, sp);
+}
+
+void LED_on() {
+  Serial.println("LED on");
+  digitalWrite(arduinoLED, HIGH);
+}
+
+void LED_off() {
+  Serial.println("LED off");
+  digitalWrite(arduinoLED, LOW);
 }
 
 /**
