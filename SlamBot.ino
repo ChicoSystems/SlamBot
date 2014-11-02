@@ -242,7 +242,7 @@ void move(int dir, int dist_ticks, int blocked_dist_cm, int speed){
                      
     Serial.print("currentHeading:");
     Serial.print(compass.getHeading());           
-    Serial.print(" AvgTicks:");
+    Serial.print(" Avg Ticks:");
     Serial.print(avg_ticks_from_start);
     Serial.print(" f-ping:");
     Serial.println(distanceSensor.f);
