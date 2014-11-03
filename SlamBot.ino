@@ -297,16 +297,16 @@ void turnTo(float dir, int n){
   int t = getTurn(heading, dir);
   int mag; //how fast to turn based on how magnitude of turn
   int loopNum = 0; //lets us break out of while loop if motors are not working
-  while(abs(t) >= 5 && loopNum < 10){
+  while(abs(t) > 5 && loopNum < 10){
   
     if(n == 0){
-      mag = map(abs(t), 0, 180, 180, 250);
+      mag = map(abs(t), 0, 180, 160, 200);
     }else if(n == 1){
-      mag = map(abs(t), 0, 180, 180, 220);
+      mag = map(abs(t), 0, 180, 150, 190);
     }else if(n == 2){
-      mag = map(abs(t), 0, 180, 170, 210);
+      mag = map(abs(t), 0, 180, 140, 180);
     }else{
-      mag = map(abs(t), 0, 180, 150, 200);
+      mag = map(abs(t), 0, 180, 140, 170);
     }
   Serial.print(" N: ");
   Serial.print(n);
