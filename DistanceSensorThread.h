@@ -15,15 +15,20 @@
 #define DistanceSensorThread_h
 #include "Thread.h"
 #include "ThreadController.h"
+#include "MovingAverage.h"
 
 class DistanceSensorThread: public Thread{
   public:
-    float f, r, b, l; // Stores the value of the pings.
+    float f, r, b, l;
     int fPinWrite, fPinRead, rPinWrite, rPinRead, // Tells us which pins to hook up to the four sensors.
         bPinWrite, bPinRead, lPinWrite, lPinRead; // NOTE: These need to be set manually by the calling code
     
     DistanceSensorThread(){
-      //Let's not set anything up in the constructor.
+      // initialize our MovingAverages for each device
+	  fAvg(1000);
+	  rAvg(1000);
+	  bAvg(1000);
+	  lAvg(1000);
     }
     
     /**
@@ -32,10 +37,10 @@ class DistanceSensorThread: public Thread{
       */
     void run(){
      // Serial.print(" run() ");
-      f = ping(0); // FRONT
-      r = ping(1); // RIGHT
-      b = ping(2); // BACK
-      l = ping(3); // LEFT
+      f = fAvg.add(ping(0)); // FRONT
+      r = rAvg.add(ping(1)); // RIGHT
+      b = bAvg.add(ping(2)); // BACK
+      l = lAvg.add(ping(3)); // LEFT
       runned(); // Tell the multi-threading library that we are done running this time.
     }
      
@@ -109,6 +114,12 @@ class DistanceSensorThread: public Thread{
     long microsecondsToCentimeters(long microseconds){
       return microseconds / 29 / 2;
     }
+	
+  private:
+	MovingAverage<float, 3> fAvg;
+	MovingAverage<float, 3> rAvg;
+	MovingAverage<float, 3> bAvg;
+	MovingAverage<float, 3> lAvg;
 };
 #endif
 
