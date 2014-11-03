@@ -17,6 +17,9 @@
 #include "ThreadController.h"
 #include "MovingAverage.h"
 
+#define TOO_CLOSE 20
+#define MAX_DISTANCE (TOO_CLOSE * 30)
+
 class DistanceSensorThread: public Thread{
   public:
     float f, r, b, l;
@@ -25,10 +28,10 @@ class DistanceSensorThread: public Thread{
     
     DistanceSensorThread(){
       // initialize our MovingAverages for each device
-	  fAvg(1000);
-	  rAvg(1000);
-	  bAvg(1000);
-	  lAvg(1000);
+	  fAvg = 1000.0f;
+	  rAvg = 1000.0f;
+	  bAvg = 1000.0f;;
+	  lAvg = 1000.0f;
     }
     
     /**
@@ -37,10 +40,10 @@ class DistanceSensorThread: public Thread{
       */
     void run(){
      // Serial.print(" run() ");
-      f = fAvg.add(ping(0)); // FRONT
-      r = rAvg.add(ping(1)); // RIGHT
-      b = bAvg.add(ping(2)); // BACK
-      l = lAvg.add(ping(3)); // LEFT
+        f = fAvg.add(ping(0)); // FRONT
+        r = rAvg.add(ping(1)); // RIGHT
+        b = bAvg.add(ping(2)); // BACK
+        l = lAvg.add(ping(3)); // LEFT
       runned(); // Tell the multi-threading library that we are done running this time.
     }
      
