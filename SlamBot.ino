@@ -16,7 +16,7 @@
 #define BUMPER A6
 #define arduinoLED 13   // Arduino LED on board
 #define DEBUG
-
+template<typename OP>
 // Instantiate the motors.
 RedBotMotor motors;
 
@@ -41,7 +41,7 @@ void timerCallback(){
 
 void setup(){
   Serial.begin(9600); 
-  debug("SLAMBOT", true);
+  debug("SLAMBOT", 1);
   
   tone(BEEPER, 2600, 750);
   
@@ -343,7 +343,8 @@ void turnTo(float dir, int n){
 }
 
 /** Used to display debug values to Serial. */
-void debug(String mesg, bool newLine = false){
+
+void debug(OP mesg, boolean newLine){
   #ifdef DEBUG
     if(newLine){
        Serial.println(mesg);
@@ -351,4 +352,8 @@ void debug(String mesg, bool newLine = false){
        Serial.print(mesg); 
     }
   #endif
+}
+
+void debug(OP mesg){
+  debug(mesg, false); 
 }
