@@ -295,7 +295,7 @@ void turnTo(float dir, int n){
   int t = getTurn(compass.getHeading(), dir);
   int mag; //how fast to turn based on how magnitude of turn
   int loopNum = 0; //lets us break out of while loop if motors are not working
-  while(abs(t) >= 2 && loopNum < 10){
+  while(abs(t) >= 5 && loopNum < 10){
   
     if(n == 0){
       mag = map(abs(t), 0, 180, 180, 250);
