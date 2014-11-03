@@ -82,6 +82,7 @@ void setup(){
   
   encoder.clearEnc(BOTH);
   goalHeading = compass.getHeading();
+  Serial.println(goalHeading);
   
   //add commands to allow remote control over serial
   sCmd.addCommand("ON",    LED_on);          // Turns LED on
@@ -97,7 +98,7 @@ void loop(){
   delay(500);
   // move(goalHeading, 500, 20, 180);
   sCmd.readSerial();
-  Serial.println(compass.heading);
+ // Serial.println(compass.heading);
   
   if(bumped)bumped = !bumped;
   //More Thread Processing done, why break it in half?
@@ -290,6 +291,14 @@ void turnTo(float dir, int n){
   int mag; //how fast to turn based on how magnitude of turn
   int loopNum = 0; //lets us break out of while loop if motors are not working
   while(abs(t) >= 2 && loopNum < 100){
+      Serial.print(" N: ");
+  Serial.print(n);
+ Serial.print(" T: ");
+  Serial.print(t);
+  Serial.print(" CurrentHeading ");
+  Serial.print(compass.getHeading());
+  Serial.print(" GoalHeading: ");
+  Serial.println(dir);
     if(n == 0){
       mag = map(abs(t), 0, 180, 180, 250);
     }else if(n == 1){
@@ -313,14 +322,7 @@ void turnTo(float dir, int n){
   delay(30); //compensate for problem with motor stop interfereing with compass.
   t = getTurn(compass.getHeading(), dir);
   if(abs(t) >= 2) turnTo(dir, n+1);
-  Serial.print(" N: ");
-  Serial.print(n)
- Serial.print(" T: ");
-  Serial.print(t)
-  Serial.print("CurrentHeading ");
-  Serial.print(compass.getHeading());
-  Serial.print(" GoalHeading: ");
-  Serial.println(dir);
+ 
 }
 
 
