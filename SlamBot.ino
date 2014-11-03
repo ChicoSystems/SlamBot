@@ -335,7 +335,9 @@ void turnTo(float dir, int n){
   Serial.print("TurnToDone h:");
   Serial.print(heading);
   Serial.print(" Goal: ");
-  Serial.println(dir);
+  Serial.print(dir);
+  Serial.print(" N: ");
+  Serial.println(n);
  
 }
 
