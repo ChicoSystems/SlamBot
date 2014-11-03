@@ -89,6 +89,7 @@ void setup(){
   sCmd.addCommand("OFF",   LED_off);         // Turns LED off
   sCmd.addCommand("T", processTurnCommand);
   sCmd.addCommand("M", processMoveCommand);
+  sCmd.addCommand("H", processHeadingCommand);
   sCmd.setDefaultHandler(processUnrecognizedCommand);      // Handler for command that isn't matched  (says "What?")
 }
 
@@ -113,6 +114,10 @@ void bump(){
 // This gets set as the default handler, and gets called when no other command matches.
 void processUnrecognizedCommand(const char *command) {
   Serial.println("What?");
+}
+
+void processHeadingCommand() {
+  Serial.println(compass.getHeading());
 }
 
 /* Processes the turn command coming in over serial. */
@@ -290,7 +295,7 @@ void turnTo(float dir, int n){
   int t = getTurn(compass.getHeading(), dir);
   int mag; //how fast to turn based on how magnitude of turn
   int loopNum = 0; //lets us break out of while loop if motors are not working
-  while(abs(t) >= 2 && loopNum < 100){
+  while(abs(t) >= 2 && loopNum < 10){
       Serial.print(" N: ");
   Serial.print(n);
  Serial.print(" T: ");
