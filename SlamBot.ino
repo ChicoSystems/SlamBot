@@ -322,7 +322,6 @@ void turnTo(float dir, int n){
        motors.pivot(mag);
     }
     t = getTurn(compass.getHeading(), dir);
-    n++;
     loopNum++;
   }
   motors.stop();
