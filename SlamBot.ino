@@ -331,7 +331,7 @@ void turnTo(float dir, int n){
   delay(30); //compensate for problem with motor stop interfereing with compass.
   heading = compass.getHeading();
   t = getTurn(heading, dir);
-  if(abs(t) >= 2) turnTo(dir, n+1);
+  if(abs(t) > 5) turnTo(dir, n+1);
   Serial.print("TurnToDone h:");
   Serial.print(heading);
   Serial.print(" Goal: ");
