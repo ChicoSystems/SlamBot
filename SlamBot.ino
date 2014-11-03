@@ -290,9 +290,11 @@ int getTurn(float cur, float goal){
 }
 
 void turnTo(float dir, int n){
+  float heading;
   Serial.println(" turnTo: ");
   if(n > 3) return;
-  int t = getTurn(compass.getHeading(), dir);
+  heading = compass.getHeading();
+  int t = getTurn(heading, dir);
   int mag; //how fast to turn based on how magnitude of turn
   int loopNum = 0; //lets us break out of while loop if motors are not working
   while(abs(t) >= 5 && loopNum < 10){
@@ -313,7 +315,7 @@ void turnTo(float dir, int n){
   Serial.print(" MAG: ");
   Serial.print(mag);
   Serial.print(" CurrentHeading ");
-  Serial.print(compass.getHeading());
+  Serial.print(heading);
   Serial.print(" GoalHeading: ");
   Serial.println(dir);
     if( t >= 2){
@@ -321,12 +323,14 @@ void turnTo(float dir, int n){
     }else{
        motors.pivot(mag);
     }
-    t = getTurn(compass.getHeading(), dir);
+    heading = compass.getHeading();
+    t = getTurn(heading, dir);
     loopNum++;
   }
   motors.stop();
   delay(30); //compensate for problem with motor stop interfereing with compass.
-  t = getTurn(compass.getHeading(), dir);
+  heading = compass.getHeading();
+  t = getTurn(heading, dir);
   if(abs(t) >= 2) turnTo(dir, n+1);
  
 }
