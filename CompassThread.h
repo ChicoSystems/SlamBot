@@ -25,7 +25,7 @@ class CompassThread: public Thread{
     
     CompassThread(){
       // We'd rather initialize everything in the init function.
-      avg = 0f;
+      avg = 0.0f;
     }
     
     /**
