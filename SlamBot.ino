@@ -62,10 +62,12 @@ void setup(){
   
   //set the interval that the clterval that tass will run at.
   distanceSensor.setInterval(100);//in milliseconds
+  compass.setInterval(100);
   
   Serial.println("adding distance sensor");
   //add the DistanceSensor to the Thread Controller using it's pointer
   controller.add(&distanceSensor);
+  controller.add(&compass);
   Serial.println("initializing timer");
   //Initialize the timer used for multithreading.
   Timer1.initialize(100000); //in microseconds
