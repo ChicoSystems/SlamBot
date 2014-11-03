@@ -51,6 +51,7 @@ class CompassThread: public Thread{
     float getHeading(){
       compass.read();
       heading = avg.add(compass.heading());
+      heading = avg.add(compass.heading());
      // Serial.println(heading);
       return heading;  
     }
