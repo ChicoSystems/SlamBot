@@ -25,6 +25,7 @@ class CompassThread: public Thread{
     
     CompassThread(){
       // We'd rather initialize everything in the init function.
+      avg = 0f;
     }
     
     /**
@@ -49,7 +50,7 @@ class CompassThread: public Thread{
      */
     float getHeading(){
       compass.read();
-      heading = compass.heading();
+      heading = avg.add(compass.heading());
      // Serial.println(heading);
       return heading;  
     }
@@ -59,9 +60,11 @@ class CompassThread: public Thread{
       * at a specific interval.
       */
     void run(){
-      heading = compass.heading();
+      heading = getHeading();
       runned(); // Used by the multi-threading library 
     }
+  private:
+    MovingAverage<float, 3> avg;
 };
 #endif
 
