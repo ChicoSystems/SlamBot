@@ -15,6 +15,7 @@
 #include "Thread.h"
 #include "ThreadController.h"
 #include "LSM303.h"
+#include "MovingAverage.h"
 #include <Wire.h>
 
 class CompassThread: public Thread{

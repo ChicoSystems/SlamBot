@@ -4,11 +4,14 @@
  * and moving average of sensor results. This is used
  * to smooth out any bad sensor readings.
  */
+ 
+#ifndef MovingAverage_h
+#define MovingAverage_h
 
 template <typename V, int N> class MovingAverage{
 public:
    /* Constructor. */
-    MovingAverage(V def = 0) : sum(0), p(0){
+     MovingAverage(V def = 0) : sum(0), p(0){
         for (int i = 0; i < N; i++){
             samples[i] = def;
             sum += samples[i];
@@ -30,5 +33,7 @@ public:
 private:
     V samples[N];
     V sum;
-    V p;
+    int p;
 };
+
+#endif
