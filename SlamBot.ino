@@ -296,14 +296,7 @@ void turnTo(float dir, int n){
   int mag; //how fast to turn based on how magnitude of turn
   int loopNum = 0; //lets us break out of while loop if motors are not working
   while(abs(t) >= 2 && loopNum < 10){
-      Serial.print(" N: ");
-  Serial.print(n);
- Serial.print(" T: ");
-  Serial.print(t);
-  Serial.print(" CurrentHeading ");
-  Serial.print(compass.getHeading());
-  Serial.print(" GoalHeading: ");
-  Serial.println(dir);
+  
     if(n == 0){
       mag = map(abs(t), 0, 180, 180, 250);
     }else if(n == 1){
@@ -313,7 +306,16 @@ void turnTo(float dir, int n){
     }else{
       mag = map(abs(t), 0, 180, 150, 200);
     }
-    
+        Serial.print(" N: ");
+  Serial.print(n);
+ Serial.print(" T: ");
+  Serial.print(t);
+  Serial.print(" MAG: ");
+  Serial.print(mag);
+  Serial.print(" CurrentHeading ");
+  Serial.print(compass.getHeading());
+  Serial.print(" GoalHeading: ");
+  Serial.println(dir);
     if( t >= 2){
        motors.pivot(-mag); 
     }else{
