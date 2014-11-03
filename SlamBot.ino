@@ -97,7 +97,7 @@ void loop(){
   delay(500);
   // move(goalHeading, 500, 20, 180);
   sCmd.readSerial();
-  Serial.println(distanceSensor.f);
+  Serial.println(compass.heading);
   
   if(bumped)bumped = !bumped;
   //More Thread Processing done, why break it in half?
@@ -284,7 +284,7 @@ int getTurn(float cur, float goal){
 }
 
 void turnTo(float dir, int n){
-  Serial.print(" turnTo ");
+  Serial.print(" turnTo: ");
   if(n > 3) return;
   int t = getTurn(compass.getHeading(), dir);
   int mag; //how fast to turn based on how magnitude of turn
@@ -294,7 +294,7 @@ void turnTo(float dir, int n){
       mag = map(abs(t), 0, 180, 180, 250);
     }else if(n == 1){
       mag = map(abs(t), 0, 180, 180, 220);
-    }else if(n ==2){
+    }else if(n == 2){
       mag = map(abs(t), 0, 180, 170, 210);
     }else{
       mag = map(abs(t), 0, 180, 150, 200);
@@ -313,9 +313,13 @@ void turnTo(float dir, int n){
   delay(30); //compensate for problem with motor stop interfereing with compass.
   t = getTurn(compass.getHeading(), dir);
   if(abs(t) >= 2) turnTo(dir, n+1);
-  Serial.print("°: ");
+  Serial.print(" N: ");
+  Serial.print(n)
+ Serial.print(" T: ");
+  Serial.print(t)
+  Serial.print("CurrentHeading ");
   Serial.print(compass.getHeading());
-  Serial.print(" G°: ");
+  Serial.print(" GoalHeading: ");
   Serial.println(dir);
 }
 
