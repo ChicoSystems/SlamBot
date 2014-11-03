@@ -290,7 +290,7 @@ int getTurn(float cur, float goal){
 }
 
 void turnTo(float dir, int n){
-  Serial.print(" turnTo: ");
+  Serial.println(" turnTo: ");
   if(n > 3) return;
   int t = getTurn(compass.getHeading(), dir);
   int mag; //how fast to turn based on how magnitude of turn
@@ -306,9 +306,9 @@ void turnTo(float dir, int n){
     }else{
       mag = map(abs(t), 0, 180, 150, 200);
     }
-        Serial.print(" N: ");
+  Serial.print(" N: ");
   Serial.print(n);
- Serial.print(" T: ");
+  Serial.print(" T: ");
   Serial.print(t);
   Serial.print(" MAG: ");
   Serial.print(mag);
