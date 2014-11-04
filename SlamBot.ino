@@ -84,15 +84,19 @@ void setup(){
   Serial.println(goalHeading);
   
   //add commands to allow remote control over serial
+  
+  Serial.println("Adding Commands");
   sCmd.addCommand("ON",    LED_on);          // Turns LED on
   sCmd.addCommand("OFF",   LED_off);         // Turns LED off
   sCmd.addCommand("T", processTurnCommand);
   sCmd.addCommand("M", processMoveCommand);
   sCmd.addCommand("H", processHeadingCommand);
   sCmd.setDefaultHandler(processUnrecognizedCommand);      // Handler for command that isn't matched  (says "What?")
+  
 }
 
 void loop(){
+  Serial.println("loop");
   //swsp.println(distanceSensor.f);
   // Here is where the Threads are processed
   delay(500);

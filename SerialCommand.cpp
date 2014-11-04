@@ -33,6 +33,7 @@ SerialCommand::SerialCommand()
     term(';'),           // default terminator for commands, newline character
     last(NULL)
 {
+  Serial.println("SerialCommand::SerialCommand()");
   strcpy(delim, " "); // strtok_r needs a null-terminated string
   clearBuffer();
 }
@@ -43,6 +44,7 @@ SerialCommand::SerialCommand()
  * to the handler function to deal with it.
  */
 void SerialCommand::addCommand(const char *command, void (*function)()) {
+ Serial.println("SerialCommand::addCommand");
   #ifdef SERIALCOMMAND_DEBUG
     Serial.print("Adding command (");
     Serial.print(commandCount);
@@ -54,6 +56,7 @@ void SerialCommand::addCommand(const char *command, void (*function)()) {
   strncpy(commandList[commandCount].command, command, SERIALCOMMAND_MAXCOMMANDLENGTH);
   commandList[commandCount].function = function;
   commandCount++;
+  
 }
 
 /**
@@ -61,6 +64,7 @@ void SerialCommand::addCommand(const char *command, void (*function)()) {
  * isn't in the list of commands.
  */
 void SerialCommand::setDefaultHandler(void (*function)(const char *)) {
+  Serial.println("SerialCommand::setDefaultHandler");
   defaultHandler = function;
 }
 
@@ -71,7 +75,7 @@ void SerialCommand::setDefaultHandler(void (*function)(const char *)) {
  * buffer for a prefix command, and calls handlers setup by addCommand() member
  */
 void SerialCommand::readSerial() {
-  //Serial.println("readSerial");
+  Serial.println("readSerial");
   while (Serial.available() > 0) {
     char inChar = Serial.read();   // Read single available character, there may be more waiting
     #ifdef SERIALCOMMAND_DEBUG
