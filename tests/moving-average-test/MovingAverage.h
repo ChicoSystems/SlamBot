@@ -22,31 +22,31 @@ public:
     /*
      * Adds a new value to the running average and returns the current average.
      */
-    V add(V new_sample){
-        //sum = sum - samples[p] + new_sample;
-        //samples[p++] = new_sample;
-        //if (p >= N)
-        //    p = 0;
-        //V answer = sum / N;
-        //Serial.print(" MovingAverage: ");
-        
-        new_sample = new_sample*(3.14159/180); //translate to radians
+    V add(V new_sample, boolean circle = false){
+        V answer;
         samples[p++] = new_sample; // add to next space
         if (p >= N) p = 0; // circle around to beginning if needed
-        V sumOfSines = 0;
-        V sumOfCosines = 0;
-        for(int i = 0; i < N; i++){ // sum up sins and cosines of angle
-          sumOfSines += sin(samples[i]); 
-          sumOfCosines += cos(samples[i]);
+        if(circle){ // if we are working on a measurment from a circle
+          V sumOfSines = 0;
+          V sumOfCosines = 0;
+          for(int i = 0; i < N; i++){ // sum up sins and cosines of angle
+            sumOfSines += sin(samples[i]*(3.14159/180); //translate to radians); 
+            sumOfCosines += cos(samples[i]*(3.14159/180);
+          }
+          answer = atan2(sumOfSines, sumOfCosines);
+          answer = answer*(180/3.14159); //translate back to degrees
+          for(int i = 0; i < N; i++){
+            Serial.print(samples[i]*(180/3.14159));
+            Serial.print(" "); 
+          }
+          if(answer < 0) answer += 360;
+        }else{ // we are not working on a measurement from a circle, but linear
+            V sum = 0;
+            for(int i = 0; i < N; i++){
+               sum += samples[i]; 
+            }
+            answer = sum / N;
         }
-        
-        V answer = atan2(sumOfSines, sumOfCosines);
-        answer = answer*(180/3.14159); //translate back to degrees
-        for(int i = 0; i < N; i++){
-          Serial.print(samples[i]*(180/3.14159));
-          Serial.print(" "); 
-        }
-        if(answer < 0) answer += 360;
         Serial.println(answer);
         return answer;
     }
