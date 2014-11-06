@@ -34,7 +34,7 @@ public:
             sumOfCosines += cos(samples[i]*(3.14159/180);
           }
           answer = atan2(sumOfSines, sumOfCosines);
-          answer = answer*(180/3.14159); //translate back to degrees
+          answer = answer*(180/3.14159); //translate back toranslate degrees
           for(int i = 0; i < N; i++){
             Serial.print(samples[i]*(180/3.14159));
             Serial.print(" "); 
