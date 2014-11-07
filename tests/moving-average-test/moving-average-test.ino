@@ -12,5 +12,5 @@ void loop(){
   //Serial.println("Compass: ");
   //Serial.println(compass.getHeading());
   compass.getHeading();
-  delay(1001);
+  delay(1002);
 }
