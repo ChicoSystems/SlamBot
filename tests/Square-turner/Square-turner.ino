@@ -60,14 +60,10 @@ void setup(){
 void loop(){
   delay(50);
   float goal = 100;
-  float heading = compass.getHeading();
-  float turn = getTurn(heading, goal);
- Serial.print("Goal: ");
- Serial.print(goal);
- Serial.print(" Heading: ");
- Serial.print(heading);
- Serial.print(" Turn: ");
- Serial.println(turn);
+  turn(100);
+  delay(10000);
+  turn(180);
+  delay(10000);
   
   
 }
@@ -165,6 +161,34 @@ float getTurn(float cur, float goal){
       if(t < 0) t = -1 * t;
     } 
     return t;
+}
+
+void turn(float goal){
+  float heading = compass.getHeading();
+  float t = getTurn(heading, goal);
+  float mag = map(abs(t), 0, 180, 150, 200);
+  while(abs(t) > 5){
+    Serial.print(" Goal: ");
+    Serial.print(goal);
+    Serial.print(" Heading: ");
+    Serial.print(heading);
+    Serial.print(" T: ");
+    Serial.print(t);
+    Serial.print(" Mag: ");
+    Serial.println(mag);
+    if( t > 5){
+       motors.pivot(mag); 
+    }else if(t < 5){
+       motors.pivot(-mag);
+    }else{
+       motors.stop(); 
+    }
+    
+    heading = compass.getHeading();
+    t = getTurn(heading, goal);
+    mag = map(abs(t), 0, 180, 150, 200);
+    delay(20);
+  }
 }
 
 void turnTo(float dir, int n){
