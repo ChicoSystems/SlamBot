@@ -58,21 +58,16 @@ void setup(){
 }
 
 void loop(){
-  delay(5000); 
-  turnTo(115, 0);
-  //move(115, 100, 15, 180);
-  
-  delay(5000);
-  turnTo(205, 0);
-  //move(205, 100, 15, 180);
-  
-  delay(5000);
-  turnTo(295, 0);
-  //move(295, 100, 15, 180);
-  
-  delay(5000);
-  turnTo(25, 0);
-  //move(25, 100, 15, 180);
+  delay(50);
+  float goal = 100;
+  float heading = compass.getHeading();
+  float turn = getTurn(heading, goal);
+ Serial.print("Goal: ");
+ Serial.print(goal);
+ Serial.print(" Heading: ");
+ Serial.print(heading);
+ Serial.print(" Turn: ");
+ Serial.println(turn);
   
   
 }
@@ -160,8 +155,8 @@ void move(int dir, int dist_ticks, int blocked_dist_cm, int speed){
 }
 
 // calculates the correct turn to make to reach the goal from the current rotation
-int getTurn(float cur, float goal){
-   int t = goal-cur;
+float getTurn(float cur, float goal){
+   float t = goal-cur;
     if(t > 180){
        t = 360 - t;
       t = -1 * t; 
