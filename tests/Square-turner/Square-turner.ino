@@ -58,19 +58,19 @@ void setup(){
 }
 
 void loop(){
-  delay(1000); 
+  delay(5000); 
   turnTo(115, 0);
   //move(115, 100, 15, 180);
   
-  delay(1000);
+  delay(5000);
   turnTo(205, 0);
   //move(205, 100, 15, 180);
   
-  delay(1000);
+  delay(5000);
   turnTo(295, 0);
   //move(295, 100, 15, 180);
   
-  delay(1000);
+  delay(5000);
   turnTo(25, 0);
   //move(25, 100, 15, 180);
   
@@ -211,10 +211,13 @@ void turnTo(float dir, int n){
     loopNum++;
   }
   motors.stop();
-  delay(30); //compensate for problem with motor stop interfereing with compass.
+  delay(50); //compensate for problem with motor stop interfereing with compass.
   heading = compass.getHeading();
   t = getTurn(heading, dir);
-  if(abs(t) > 5) turnTo(dir, n+1);
+  if(abs(t) > 5){
+    delay(1000);
+    turnTo(dir, n+1);
+  }
   Serial.print("TurnToDone h:");
   Serial.print(heading);
   Serial.print(" Goal: ");
