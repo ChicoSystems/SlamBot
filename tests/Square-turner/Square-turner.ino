@@ -189,6 +189,7 @@ void turn(float goal){
     mag = map(abs(t), 0, 180, 110, 150);
     delay(20);
   }
+  motors.stop(); 
 }
 
 void turnTo(float dir, int n){
