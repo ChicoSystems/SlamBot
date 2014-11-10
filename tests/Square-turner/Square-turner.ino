@@ -202,9 +202,9 @@ void turnTo(float dir, int n){
   Serial.print(" GoalHeading: ");
   Serial.println(dir);
     if( t >= 2){
-       motors.pivot(-mag); 
+       motors.pivot(mag); 
     }else{
-       motors.pivot(mag);
+       motors.pivot(-mag);
     }
     heading = compass.getHeading();
     t = getTurn(heading, dir);
