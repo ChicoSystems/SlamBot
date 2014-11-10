@@ -170,7 +170,7 @@ float getTurn(float cur, float goal){
 void turn(float goal){
   float heading = compass.getHeading();
   float t = getTurn(heading, goal);
-  float mag = map(abs(t), 0, 180, 150, 200);
+  float mag = map(abs(t), 0, 180, 120, 200);
   while(abs(t) > 5){
     if( t > 5){
        motors.pivot(-mag); 
@@ -182,7 +182,7 @@ void turn(float goal){
     
     heading = compass.getHeading();
     t = getTurn(heading, goal);
-    mag = map(abs(t), 0, 180, 110, 150);
+    mag = map(abs(t), 0, 180, 120, 150);
     delay(20);
     Serial.print(" Goal: ");
     Serial.print(goal);
