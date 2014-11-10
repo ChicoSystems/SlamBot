@@ -58,11 +58,15 @@ void setup(){
 }
 
 void loop(){
-  delay(50);
-  float goal = 100;
-  turn(100);
+ // delay(50);
+  //float goal = 100;
+  turn(0);
+  delay(10000);
+  turn(90);
   delay(10000);
   turn(180);
+  delay(10000);
+  turn(270);
   delay(10000);
   
   
@@ -168,14 +172,6 @@ void turn(float goal){
   float t = getTurn(heading, goal);
   float mag = map(abs(t), 0, 180, 150, 200);
   while(abs(t) > 5){
-    Serial.print(" Goal: ");
-    Serial.print(goal);
-    Serial.print(" Heading: ");
-    Serial.print(heading);
-    Serial.print(" T: ");
-    Serial.print(t);
-    Serial.print(" Mag: ");
-    Serial.println(mag);
     if( t > 5){
        motors.pivot(-mag); 
     }else if(t < -5){
@@ -188,6 +184,14 @@ void turn(float goal){
     t = getTurn(heading, goal);
     mag = map(abs(t), 0, 180, 110, 150);
     delay(20);
+    Serial.print(" Goal: ");
+    Serial.print(goal);
+    Serial.print(" Heading: ");
+    Serial.print(heading);
+    Serial.print(" T: ");
+    Serial.print(t);
+    Serial.print(" Mag: ");
+    Serial.println(mag);
   }
   motors.stop(); 
 }
