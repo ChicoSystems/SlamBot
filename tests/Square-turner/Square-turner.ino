@@ -177,16 +177,16 @@ void turn(float goal){
     Serial.print(" Mag: ");
     Serial.println(mag);
     if( t > 5){
-       motors.pivot(mag); 
-    }else if(t < 5){
-       motors.pivot(-mag);
+       motors.pivot(-mag); 
+    }else if(t < -5){
+       motors.pivot(mag);
     }else{
        motors.stop(); 
     }
     
     heading = compass.getHeading();
     t = getTurn(heading, goal);
-    mag = map(abs(t), 0, 180, 100, 150);
+    mag = map(abs(t), 0, 180, 110, 150);
     delay(20);
   }
 }
