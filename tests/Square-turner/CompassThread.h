@@ -37,7 +37,7 @@ class CompassThread: public Thread{
       compass.init();
       compass.enableDefault();
        
-      /* These min/max values for the x, y and z axis of the LSM303 compass
+      /* These min/max values for the x, y and z axis of the LSM303a compass
         were figured out using using examples from the LSM303 library */
       compass.m_min = (LSM303::vector<int16_t>){-784, -623, -555};
       compass.m_max = (LSM303::vector<int16_t>){+322, +517, +489};
