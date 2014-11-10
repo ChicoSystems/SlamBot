@@ -171,10 +171,10 @@ void turn(float goal){
   float heading = compass.getHeading();
   float t = getTurn(heading, goal);
   float mag = map(abs(t), 0, 180, 120, 200);
-  while(abs(t) > 5){
-    if( t > 5){
+  while(abs(t) > 2){
+    if( t > 2){
        motors.pivot(-mag); 
-    }else if(t < -5){
+    }else if(t < -2){
        motors.pivot(mag);
     }else{
        motors.stop(); 
