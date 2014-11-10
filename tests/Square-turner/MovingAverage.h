@@ -47,7 +47,7 @@ public:
             }
             answer = sum / N;
         }
-        Serial.println(answer);
+        //Serial.println(answer);
         return answer;
     }
 
