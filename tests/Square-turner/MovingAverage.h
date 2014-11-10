@@ -35,10 +35,10 @@ public:
           }
           answer = atan2(sumOfSines, sumOfCosines);
           answer = answer*(180/3.14159); //translate back toranslate degrees
-          for(int i = 0; i < N; i++){
-            Serial.print(samples[i]*(180/3.14159));
-            Serial.print(" "); 
-          }
+          //for(int i = 0; i < N; i++){
+            //Serial.print(samples[i]*(180/3.14159));
+            //Serial.print(" "); 
+          //}
           if(answer < 0) answer += 360;
         }else{ // we are not working on a measurement from a circle, but linear
             V sum = 0;

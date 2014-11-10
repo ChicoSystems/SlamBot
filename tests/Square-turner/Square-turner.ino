@@ -15,14 +15,14 @@ RedBotMotor motors;
 RedBotEncoder encoder = RedBotEncoder(11, 10); // left, right
 
 //Initiate our distance sensor and the controller
-DistanceSensorThread distanceSensor = DistanceSensorThread();
+//DistanceSensorThread distanceSensor = DistanceSensorThread();
 CompassThread compass = CompassThread(); //we're not using this as a thread here
-ThreadController controller = ThreadController();
+//ThreadController controller = ThreadController();
 
 //The function that the timer will call for the DistanceSensor.
 void timerCallback(){
  // Serial.print(" timerCallback() ");
-  controller.run(); 
+  //controller.run(); 
 }
 
 void setup(){
@@ -30,21 +30,21 @@ void setup(){
   Serial.println("Square-turner");
   compass.init();
   
-  distanceSensor.fPinWrite = A2;
-  distanceSensor.fPinRead = A3;
-  distanceSensor.rPinWrite = 3; 
-  distanceSensor.rPinRead = 3;
-  distanceSensor.bPinWrite = 9;
-  distanceSensor.bPinRead = 9;
-  distanceSensor.lPinWrite = A0;
-  distanceSensor.lPinRead = A1;
+  //distanceSensor.fPinWrite = A2;
+  //distanceSensor.fPinRead = A3;
+  //distanceSensor.rPinWrite = 3; 
+  //distanceSensor.rPinRead = 3;
+  //distanceSensor.bPinWrite = 9;
+  //distanceSensor.bPinRead = 9;
+  //distanceSensor.lPinWrite = A0;
+  //distanceSensor.lPinRead = A1;
   
   //set the interval that the clterval that tass will run at.
-  distanceSensor.setInterval(100);//in milliseconds
-  compass.setInterval(100);
-  controller.add(&distanceSensor);
-   Timer1.initialize(100000); //in microseconds
-  Timer1.attachInterrupt(timerCallback);
+  //distanceSensor.setInterval(100);//in milliseconds
+  //compass.setInterval(100);
+  //controller.add(&distanceSensor);
+  // Timer1.initialize(100000); //in microseconds
+  //Timer1.attachInterrupt(timerCallback);
   
   //encoders don't work unless we power motors first.
   motors.brake();
@@ -58,21 +58,21 @@ void setup(){
 }
 
 void loop(){
-  delay(500); 
+  delay(1000); 
   turnTo(115, 0);
-  move(115, 100, 15, 180);
+  //move(115, 100, 15, 180);
   
-  delay(500);
+  delay(1000);
   turnTo(205, 0);
-  move(205, 100, 15, 180);
+  //move(205, 100, 15, 180);
   
-  delay(500);
+  delay(1000);
   turnTo(295, 0);
-  move(295, 100, 15, 180);
+  //move(295, 100, 15, 180);
   
-  delay(500);
+  delay(1000);
   turnTo(25, 0);
-  move(25, 100, 15, 180);
+  //move(25, 100, 15, 180);
   
   
 }
@@ -110,7 +110,7 @@ void move(int dir, int dist_ticks, int blocked_dist_cm, int speed){
   encoderStart[1] = encoder.getTicks(RIGHT);
   
   boolean keepMoving = true; // keeps track if we should keep moving or not.
-  if(distanceSensor.f <= blocked_dist_cm) keepMoving = false;
+  //if(distanceSensor.f <= blocked_dist_cm) keepMoving = false;
   
   while(keepMoving){
     delay(10);
@@ -136,11 +136,11 @@ void move(int dir, int dist_ticks, int blocked_dist_cm, int speed){
     Serial.print(compass.getHeading());           
     Serial.print(" Avg Ticks:");
     Serial.print(avg_ticks_from_start);
-    Serial.print(" f-ping:");
-    Serial.println(distanceSensor.f);
+    //Serial.print(" f-ping:");
+    //Serial.println(distanceSensor.f);
     
     // If ping is too small, and not 0, or if our avg ticks are to big we will stop moving
-    if(((distanceSensor.f < blocked_dist_cm && distanceSensor.f != 0) 
+    if(((/*distanceSensor.f < blocked_dist_cm && distanceSensor.f != 0 */false) 
         || avg_ticks_from_start >= dist_ticks)) {
         keepMoving = false;
         }
@@ -153,8 +153,8 @@ void move(int dir, int dist_ticks, int blocked_dist_cm, int speed){
   motors.stop();
   Serial.print("DONE: move()- currentHeading:");
   Serial.print(compass.getHeading());
-  Serial.print(" f-ping:");
-  Serial.print(distanceSensor.f);
+ // Serial.print(" f-ping:");
+  //Serial.print(distanceSensor.f);
   Serial.print(" avg_ticks_from_start:");
   Serial.println(avg_ticks_from_start);
 }
