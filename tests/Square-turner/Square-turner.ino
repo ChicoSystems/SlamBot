@@ -186,7 +186,7 @@ void turn(float goal){
     
     heading = compass.getHeading();
     t = getTurn(heading, goal);
-    mag = map(abs(t), 0, 180, 150, 200);
+    mag = map(abs(t), 0, 180, 100, 150);
     delay(20);
   }
 }
