@@ -11,7 +11,7 @@
 
 #include <Wire.h>
 
-// Create an alias for our pinsss
+// Create an alias for our pin sss
 #define BEEPER A7
 #define BUMPER A6
 #define arduinoLED 13   // Arduino LED on board
