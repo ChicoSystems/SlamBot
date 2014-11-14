@@ -1,4 +1,4 @@
-// ** Experiementing with multi-threading library ArduinoThread */
+// **  Experiementing with multi-threading library ArduinoThread */
 #include "Thread.h"
 #include "ThreadController.h"
 #include "DistanceSensorThread.h"
